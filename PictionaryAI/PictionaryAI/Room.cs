@@ -29,6 +29,8 @@
 
         public User[] GetUsers() => _connIdToUser.Values.ToArray();
 
+        public bool IsEmpty() => _connIdToUser.Count == 0;
+
         public User AddUser(string connectionId, string? name = null)
         {
             User user = new User(connectionId, this, _connIdToUser.Count == 0, name);

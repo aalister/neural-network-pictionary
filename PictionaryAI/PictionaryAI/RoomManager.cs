@@ -64,6 +64,12 @@ namespace PictionaryAI
             _connIdToRoom.Remove(user.ConnectionId);
             await context.Groups.RemoveFromGroupAsync(user.ConnectionId, room.Id);
             await SendPlayerListChange(context, room);
+
+            //If the room is now empty, delete the room
+            if (room.IsEmpty())
+            {
+                _rooms.Remove(room.Id);
+            }
         }
 
         public async Task ChangeUserName(IHubContext<PictionaryHub> context, string connectionId, string name)
