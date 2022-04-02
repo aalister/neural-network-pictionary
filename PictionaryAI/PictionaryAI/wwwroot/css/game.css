@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#banner {
+    align-items: center;
+    background: #ddd;
+    display: flex;
+    padding: 1rem;
+}
+
+#prompt {
+    font-size: 3rem;
+    flex-grow: 1;
+    margin-left: 20rem;
+    text-align: center;
+}
+
+#code-wrapper {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    width: 20rem;
+}
+
+#code {
+    margin-right: .6rem;
+}
+
+#game {
+    display: flex;
+}
+
+#canvas-wrapper {
+    flex-grow: 1;
+    text-align: center;
+}
+
+#canvas {
+    border: .2rem solid black;
+}

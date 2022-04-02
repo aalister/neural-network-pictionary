@@ -10,15 +10,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <script src="~/lib/signalr/signalr.js"></script>
     <link href="~/css/styles.css" rel="stylesheet">
+    <link href="~/css/game.css" rel="stylesheet">
+
+    <script src="~/lib/signalr/signalr.js"></script>
     <script defer src="~/js/game.js"></script>
 </head>
 <body>
-    <canvas id="canvas" width="560" height="560">
-        HTML5 canvas not supported
-    </canvas>
-    <br>
-    <button id="submit">Submit</button>
+    <div id="banner">
+        <div id="prompt">Prompt</div>
+        <div id="code-wrapper">
+            <span id="code"></span>
+            <button id="copy-code">Copy</button>
+        </div>
+    </div>
+    <div id="game">
+        <div id="sidebar">
+            <h3>Players</h3>
+            <ul id="player-list"></ul>
+            <button id="start">Start</button>
+        </div>
+        <div id="canvas-wrapper">
+            <canvas id="canvas" width="560" height="560">
+                HTML5 canvas not supported
+            </canvas>
+        </div>
+    </div>
 </body>
 </html>
