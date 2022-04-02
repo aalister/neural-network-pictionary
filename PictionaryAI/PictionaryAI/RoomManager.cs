@@ -68,6 +68,7 @@ namespace PictionaryAI
             //If the room is now empty, delete the room
             if (room.IsEmpty())
             {
+                room.DeleteRoom();
                 _rooms.Remove(room.Id);
             }
         }
@@ -83,6 +84,50 @@ namespace PictionaryAI
         private async Task SendPlayerListChange(IHubContext<PictionaryHub> context, Room room)
         {
             await context.Clients.Group(room.Id).SendAsync("PlayerListChange", room.GetUsers().Select(user => new Models.Player(user.Id, user.IsHost, user.Name, user.Score)));
+        }
+
+        public async Task StartGame(IHubContext<PictionaryHub> context, string roomId)
+        {
+            Room room = GetRoomFromRoomId(roomId);
+            if (room.IsStarted)
+            {
+                throw new InvalidOperationException("The room is already started, when trying to start the game");
+            }
+            int countdownMillis = 3000; //Maybe get this value from configuration instead?
+            room.StartGame(context, this, countdownMillis);
+            await context.Clients.Group(room.Id).SendAsync("DoCountdown", countdownMillis);
+        }
+
+        public async Task StartNewRound(IHubContext<PictionaryHub> context, string roomId)
+        {
+            Room room = GetRoomFromRoomId(roomId);
+            if (!room.IsStarted)
+            {
+                throw new InvalidOperationException("The room is not started, when trying to start a new round");
+            }
+            if (room.IsRoundInProgress)
+            {
+                throw new InvalidOperationException("The room is currently in a round, when trying to start a new round");
+            }
+            int roundLengthMillis = 10000; //Maybe get this value from configuration instead?
+            (string prompt, uint promptIndex) = room.StartNewRound(context, this, roundLengthMillis);
+            await context.Clients.Group(room.Id).SendAsync("NewRound", prompt, promptIndex, roundLengthMillis);
+        }
+
+        public async Task EndRound(IHubContext<PictionaryHub> context, string roomId)
+        {
+            Room room = GetRoomFromRoomId(roomId);
+            if (!room.IsStarted)
+            {
+                throw new InvalidOperationException("The room is not started, when trying to end a round");
+            }
+            if (!room.IsRoundInProgress)
+            {
+                throw new InvalidOperationException("The room is currently in a round, when trying to end a round");
+            }
+            int roundBreakMillis = 5000; //Maybe get this value from configuration instead?
+            room.EndRound(context, this, roundBreakMillis);
+            await context.Clients.Group(room.Id).SendAsync("EndRound");
         }
     }
 }

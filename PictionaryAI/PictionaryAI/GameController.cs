@@ -50,5 +50,23 @@ namespace PictionaryAI
             await _roomManager.ChangeUserName(_pictionaryHub, connectionId, name);
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> StartGame([FromQuery(Name = "id")] string connectionId)
+        {
+            if (!_roomManager.ConnectionIdExists(connectionId))
+            {
+                return NotFound();
+            }
+            Room room = _roomManager.GetRoomFromConnectionId(connectionId);
+            User user = room.GetUserFromConnectionId(connectionId);
+            if (!user.IsHost || room.IsStarted)
+            {
+                return Unauthorized();
+            }
+            //We're good to go, start the game
+            await _roomManager.StartGame(_pictionaryHub, room.Id);
+            return Ok();
+        }
     }
 }

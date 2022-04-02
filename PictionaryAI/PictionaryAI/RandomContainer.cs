@@ -8,5 +8,10 @@
         {
             return (uint)_random.Next();
         }
+
+        public static int GetRandomInRange(int start, int end)
+        {
+            return _random.Next(start, end);
+        }
     }
 }
