@@ -8,33 +8,34 @@ namespace PictionaryAI
     public class GameController : ControllerBase
     {
         private readonly RoomManager _roomManager;
-        private readonly PictionaryHub _hub;
+        private readonly PictionaryHub _pictionaryHub;
 
-        public GameController(RoomManager roomManager, PictionaryHub hub)
+        public GameController(RoomManager roomManager, PictionaryHub pictionaryHub)
         {
             _roomManager = roomManager;
-            _hub = hub;
+            _pictionaryHub = pictionaryHub;
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> Host([FromQuery(Name = "id")] string connectionId)
+        [Route("host")]
+        [Route("host/{name}")]
+        public async Task<ActionResult<string>> Host([FromQuery(Name = "id")] string connectionId, [FromRoute(Name = "name")] string? name = null)
         {
             Room room = _roomManager.CreateRoom();
-            User user = room.AddUser(connectionId);
-            await _hub.Groups.AddToGroupAsync(user.ConnectionId, room.Id);
+            await _roomManager.AddUser(_pictionaryHub, room.Id, connectionId, name);
             return Ok(room.Id);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Join([FromQuery(Name = "id")] string connectionId, [FromRoute(Name = "code")] string roomId)
+        [Route("join/{code}")]
+        [Route("join/{code}/{name}")]
+        public async Task<ActionResult> Join([FromQuery(Name = "id")] string connectionId, [FromRoute(Name = "code")] string roomId, [FromRoute(Name = "name")] string? name = null)
         {
             if (!_roomManager.RoomIdExists(roomId))
             {
                 return NotFound();
             }
-            Room room = _roomManager.GetRoomFromRoomId(roomId);
-            User user = room.AddUser(connectionId);
-            await _hub.Groups.AddToGroupAsync(user.ConnectionId, room.Id);
+            await _roomManager.AddUser(_pictionaryHub, roomId, connectionId, name);
             return Ok();
         }
 
@@ -45,9 +46,7 @@ namespace PictionaryAI
             {
                 return NotFound();
             }
-            Room room = _roomManager.GetRoomFromConnectionid(connectionId);
-            User user = room.GetUserFromConnectionid(connectionId);
-            user.ChangeName(name);
+            await _roomManager.ChangeUserName(_pictionaryHub, connectionId, name);
             return Ok();
         }
     }

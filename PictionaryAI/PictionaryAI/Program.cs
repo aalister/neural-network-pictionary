@@ -3,7 +3,7 @@ using PictionaryAI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddTransient<RoomManager>();
+builder.Services.AddSingleton<RoomManager>();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddRazorPages();

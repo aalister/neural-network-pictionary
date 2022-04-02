@@ -9,14 +9,6 @@ namespace PictionaryAI
         public PictionaryHub(RoomManager roomManager)
         {
             _roomManager = roomManager;
-            //_roomManager.OnUserAdded += async (object? sender, RoomManager.UserChangeEventArgs e) =>
-            //{
-            //    await Groups.AddToGroupAsync(e.User.ConnectionId, e.Room.Id);
-            //};
-            //_roomManager.OnUserRemoved += async (object? sender, RoomManager.UserChangeEventArgs e) =>
-            //{
-            //    await Groups.RemoveFromGroupAsync(e.User.ConnectionId, e.Room.Id);
-            //};
         }
 
         public async Task Ping(string test)
@@ -28,7 +20,11 @@ namespace PictionaryAI
         {
             string connectionId = Context.ConnectionId;
             await base.OnDisconnectedAsync(exception);
-            _roomManager.RemoveUser(connectionId);
+            if (_roomManager.ConnectionIdExists(connectionId))
+            {
+                Room room = _roomManager.GetRoomFromConnectionId(connectionId);
+                await _roomManager.RemoveUser(this, connectionId);
+            }
         }
     }
 }
