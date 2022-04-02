@@ -20,3 +20,24 @@ input, button {
 input:focus {
     outline: none;
 }
+
+body {
+    background: url("../img/background.svg") repeat;
+    background-size: 1600px 1200px;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -9999;
+    position: fixed;
+    animation: background-slide 30s linear infinite;
+}
+
+@keyframes background-slide {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -1600px -1200px;
+    }
+}
