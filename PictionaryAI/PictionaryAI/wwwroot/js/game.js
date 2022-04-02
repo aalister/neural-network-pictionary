@@ -100,6 +100,13 @@
     const playerList = document.getElementById("player-list");
 
     /**
+     * Display error message when the server closes.
+     */
+    conn.onclose(function() {
+        document.getElementById("connection-lost").classList.add("active");
+    });
+
+    /**
      * Update the list of players in the sidebar.
      */
     conn.on("playerListChange", function(updatedList) {
@@ -166,6 +173,10 @@
         interval = setInterval(function() {
             number--;
             timer.innerHTML = number;
+
+            if (number == 0) {
+                clearInterval(interval);
+            }
         }, 1000);
     });
 
@@ -229,7 +240,7 @@
         document.getElementById("code").innerHTML = code;
         const response = await fetch(`/api/game/join/${code}?id=${connId}`, { method: "POST" });
         if (!response.ok) {
-            document.getElementById("game-not-found").style.visibility = "visible";
+            document.getElementById("game-not-found").classList.add("active");
         }
     }
 
@@ -252,7 +263,7 @@
      * Ask the user to enter a name.
      */
     document.getElementById("set-name-button").addEventListener("click", async function(_) {
-        document.getElementById("enter-name").style.visibility = "hidden";
+        document.getElementById("enter-name").classList.remove("active");
         const name = document.getElementById("name-input").value;
 
         if (name) {
