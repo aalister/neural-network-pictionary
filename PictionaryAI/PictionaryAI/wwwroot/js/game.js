@@ -1,16 +1,100 @@
 ﻿(async function() {
-    const prompt = document.getElementById("prompt");
-    const timer = document.getElementById("timer");
-    const playerList = document.getElementById("player-list");
-    let players = [];
+    const canvas = document.getElementById("canvas");
+
+    /** @type {CanvasRenderingContext2D} */
+    const context = canvas.getContext("2d");
+    const bounds = canvas.getBoundingClientRect();
+
+    context.lineCap = "round";
+    context.strokeStyle = "black";
+    context.lineWidth = 20;
+    context.fillStyle = "rgba(0, 0, 0, 0)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let isDrawing = false;
+    let inGame = false;
+
+    /**
+     * Start drawing when the user clicks.
+     */
+    canvas.addEventListener("mousedown", function(event) {
+        setMousePos(event);
+        isDrawing = true && inGame;
+
+        context.beginPath();
+        context.moveTo(mouseX, mouseY);
+    });
+    
+    /**
+     * Draw a line to the mouse's new position.
+     */
+    canvas.addEventListener("mousemove", function(event) {
+        setMousePos(event);
+
+        if (isDrawing && inGame) {
+            context.lineTo(mouseX, mouseY);
+            context.stroke();
+        }
+    });
+
+    /**
+     * Stop drawing the line when the user releases the mouse anywhere on the page.
+     */
+    document.body.addEventListener("mouseup", function(event) {
+        setMousePos(event);
+        isDrawing = false;
+    });
+
+    /**
+     * Set mouseX and mouseY to the current mouse position.
+     * 
+     * @param {MouseEvent} event 
+     */
+    function setMousePos(event) {
+        mouseX = event.clientX - bounds.left;
+        mouseY = event.clientY - bounds.top;
+    }
+
+    /**
+     * Extract a 28 x 28 image from the canvas.
+     * 
+     * @returns {Uint8ClampedArray}
+     */
+    function extractImage() {
+        const result = document.createElement("canvas");
+
+        result.width = 28;
+        result.height = 28;
+
+        /** @type {CanvasRenderingContext2D} */
+        const resultContext = result.getContext("2d");
+        resultContext.drawImage(canvas, 0, 0, 28, 28);
+
+        // Only return the alpha channel
+        const image = resultContext.getImageData(0, 0, 28, 28).data;
+        return image.filter((_, index) => (index - 3) % 4 == 0);
+    }
 
     const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
+
+    let players = [];
+    const playerList = document.getElementById("player-list");
 
     /**
      * Update the list of players in the sidebar.
      */
     conn.on("playerListChange", function(updatedList) {
-        players = updatedList;
+        // Sort players by score (or alphabetically if they have the same score)
+        players = updatedList.sort(function(a, b) {
+            if (a.score < b.score) return 1;
+            if (a.score > b.score) return -1;
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+        });
+
         playerList.innerHTML = "";
 
         for (const player of players) {
@@ -18,27 +102,68 @@
         }
     });
 
+    const startButton = document.getElementById("start-button");
+    const timer = document.getElementById("timer");
+    const countdown = document.getElementById("countdown");
+
     /**
      * Launch the countdown.
      */
     conn.on("doCountdown", function(duration) {
         console.log(`Do countdown ${duration}`);
+
+        startButton.style.display = "none";
+        timer.style.display = "inline";
+
+        let number = Math.floor(duration / 1000);
+        countdown.style.visibility = "visible";
+        countdown.innerHTML = number
+        
+        const interval = setInterval(function() {
+            number--;
+            countdown.innerHTML = number;
+
+            if (number == 0) {
+                countdown.style.visibility = "hidden";
+                clearInterval(interval);
+            }
+        }, 1000);
     });
+
+    const prompt = document.getElementById("prompt");
+    let interval = null;
 
     /**
      * Start a new round with a particular prompt.
      */
-    conn.on("newRound", function(prompt, promptIndex, roundLength) {
-        prompt.innerHTML = prompt;
-        console.log(`New round: ${prompt}, ${promptIndex}, ${roundLength}`);
-    });
+    conn.on("newRound", function(promptName, promptIndex, duration) {
+        console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
+        inGame = true;
 
+        let countdown = Math.floor(duration / 1000);
+        timer.innerHTML = countdown;
+        prompt.innerHTML = promptName;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        interval = setInterval(function() {
+            countdown--;
+            timer.innerHTML = countdown;
+        }, 1000);
+    });
 
     /**
      * Indicate that a player scored.
      */
     conn.on("playerScored", function(playerId) {
         console.log(`Player scored: ${playerId}`);
+        
+        const index = players.map(player => player.id).indexOf(playerId);
+        const node = playerList.children.item(index);
+        node.classList.add("active");
+
+        setTimeout(function() {
+            node.classList.remove("active");
+        }, 2000);
     });
 
     /**
@@ -46,6 +171,10 @@
      */
     conn.on("endRound", function() {
         console.log("End round");
+        inGame = false;
+
+        timer.innerHTML = 0;
+        clearInterval(interval);
     });
 
     await conn.start();
@@ -92,7 +221,6 @@
         document.getElementById("code").innerHTML = code;
         
         // Make start game button visible
-        const startButton = document.getElementById("start-button")
         startButton.style.display = "block";
         startButton.addEventListener("click", function(_) {
             fetch(`/api/game/startgame?id=${connId}`, { method: "POST" });
@@ -110,83 +238,4 @@
             await fetch(`/api/game/setname/${name}?id=${connId}`, { method: "POST" });
         }
     });
-})();
-
-(function() {
-    const canvas = document.getElementById("canvas");
-
-    /** @type {CanvasRenderingContext2D} */
-    const context = canvas.getContext("2d");
-    const bounds = canvas.getBoundingClientRect();
-
-    context.lineCap = "round";
-    context.strokeStyle = "black";
-    context.lineWidth = 20;
-    context.fillStyle = "rgba(0, 0, 0, 0)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let isDrawing = false;
-
-    /**
-     * Start drawing when the user clicks.
-     */
-    canvas.addEventListener("mousedown", function(event) {
-        setMousePos(event);
-        isDrawing = true;
-
-        context.beginPath();
-        context.moveTo(mouseX, mouseY);
-    });
-    
-    /**
-     * Draw a line to the mouse's new position.
-     */
-    canvas.addEventListener("mousemove", function(event) {
-        setMousePos(event);
-
-        if (isDrawing) {
-            context.lineTo(mouseX, mouseY);
-            context.stroke();
-        }
-    });
-
-    /**
-     * Stop drawing the line when the user releases the mouse anywhere on the page.
-     */
-    document.body.addEventListener("mouseup", function(event) {
-        setMousePos(event);
-        isDrawing = false;
-    });
-
-    /**
-     * Set mouseX and mouseY to the current mouse position.
-     * 
-     * @param {MouseEvent} event 
-     */
-    function setMousePos(event) {
-        mouseX = event.clientX - bounds.left;
-        mouseY = event.clientY - bounds.top;
-    }
-
-    /**
-     * Extract a 28 x 28 image from the canvas.
-     * 
-     * @returns {Uint8ClampedArray}
-     */
-    function extractImage() {
-        const result = document.createElement("canvas");
-
-        result.width = 28;
-        result.height = 28;
-
-        /** @type {CanvasRenderingContext2D} */
-        const resultContext = result.getContext("2d");
-        resultContext.drawImage(canvas, 0, 0, 28, 28);
-
-        // Only return the alpha channel
-        const image = resultContext.getImageData(0, 0, 28, 28).data;
-        return image.filter((_, index) => (index - 3) % 4 == 0);
-    }
 })();

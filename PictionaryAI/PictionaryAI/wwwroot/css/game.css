@@ -75,12 +75,50 @@ body {
 }
 
 #sidebar {
+    padding: 0 1rem;
     width: 20rem;
+}
+
+#player-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#player-list li {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    background: white;
+}
+
+#player-list li.active {
+    background: goldenrod;
 }
 
 #canvas-wrapper {
     flex-grow: 1;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#canvas-inner {
+    width: 560px;
+    height: 560px;
+    position: relative;
+}
+
+#countdown {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15rem;
+    visibility: hidden;
 }
 
 #canvas {

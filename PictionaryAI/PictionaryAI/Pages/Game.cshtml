@@ -19,11 +19,11 @@
 <body>
     <div id="banner">
         <div id="timer-wrapper">
-            <div id="timer">Timer</div>
+            <div id="timer"></div>
             <button id="start-button">Start</button>
         </div>
 
-        <div id="prompt">Prompt</div>
+        <div id="prompt"></div>
 
         <div id="code-wrapper">
             <span id="code"></span>
@@ -38,9 +38,19 @@
         </div>
 
         <div id="canvas-wrapper">
-            <canvas id="canvas" width="560" height="560">
-                HTML5 canvas not supported
-            </canvas>
+            <div id="canvas-inner">
+                <div id="countdown">3</div>
+                <canvas id="canvas" width="560" height="560">
+                    HTML5 canvas not supported
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="enter-name" class="scrim">
+        <div class="popup">
+            <input type="text" id="name-input" placeholder="Enter your name" autocomplete="off">
+            <button id="set-name-button">Set Name</button>
         </div>
     </div>
     
@@ -49,13 +59,6 @@
             <h2>Game not found</h2>
             <p>There's no active game with that code. Try checking the code to make sure it is correct.</p>
             <a id="go-back-button" href="~/">Go Back</a>
-        </div>
-    </div>
-
-    <div id="enter-name" class="scrim">
-        <div class="popup">
-            <input type="text" id="name-input" placeholder="Enter your name" autocomplete="off">
-            <button id="set-name-button">Set Name</button>
         </div>
     </div>
 </body>
