@@ -6,23 +6,24 @@
     });
 
     await conn.start();
+    const connId = conn.connection.connectionId;
 
     const { code } = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop)
     });
 
-    // if (code) {
-    //     joinGame(code);
-    // } else {
-    //     hostGame();
-    // }
+    if (code) {
+        joinGame(code);
+    } else {
+        hostGame();
+    }
 
     async function joinGame(code) {
-        await fetch(`/api/game/join/${code}`);
+        await fetch(`/api/game/join/${code}?id=${connId}`);
     }
 
     async function hostGame() {
-        const code = await fetch("/api/game/host");
+        const code = await fetch(`/api/game/host?id=${connId}`);
     }
 })();
 
