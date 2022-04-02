@@ -12,11 +12,3 @@ form {
 form:not(:last-of-type) {
     margin-bottom: 1rem;
 }
-
-input {
-    padding: 1rem;
-}
-
-input:focus {
-    outline: none;
-}

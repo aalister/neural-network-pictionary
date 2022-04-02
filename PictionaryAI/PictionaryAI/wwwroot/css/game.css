@@ -3,18 +3,60 @@ body {
     flex-direction: column;
 }
 
+.scrim {
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    padding: 10rem;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.popup {
+    background: white;
+    padding: 5rem;
+    max-width: 50rem;
+}
+
+.popup h2 {
+    margin-top: 0;
+}
+
+#enter-name .popup {
+    display: flex;
+    flex-direction: column;
+}
+
+#set-name-button {
+    margin-top: 1rem;
+}
+
 #banner {
     align-items: center;
     background: #ddd;
     display: flex;
+    justify-content: space-between;
     padding: 1rem;
+}
+
+#timer-wrapper {
+    width: 20rem;
+}
+
+#timer {
+    display: none;
+}
+
+#start-button {
+    display: none;
 }
 
 #prompt {
     font-size: 3rem;
-    flex-grow: 1;
-    margin-left: 20rem;
-    text-align: center;
 }
 
 #code-wrapper {
@@ -30,6 +72,10 @@ body {
 
 #game {
     display: flex;
+}
+
+#sidebar {
+    width: 20rem;
 }
 
 #canvas-wrapper {
