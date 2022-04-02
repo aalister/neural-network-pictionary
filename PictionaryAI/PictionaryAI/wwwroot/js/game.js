@@ -1,14 +1,42 @@
-﻿(function() {
+﻿(async function() {
+    const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
+
+    conn.on("playerListChange", function(json) {
+        console.log(json);
+    });
+
+    await conn.start();
+
+    const { code } = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop)
+    });
+
+    // if (code) {
+    //     joinGame(code);
+    // } else {
+    //     hostGame();
+    // }
+
+    async function joinGame(code) {
+        await fetch(`/api/game/join/${code}`);
+    }
+
+    async function hostGame() {
+        const code = await fetch("/api/game/host");
+    }
+})();
+
+(function() {
     const canvas = document.getElementById("canvas");
 
     /** @type {CanvasRenderingContext2D} */
     const context = canvas.getContext("2d");
     const bounds = canvas.getBoundingClientRect();
 
-    context.fillStyle = "rgba(0, 0, 0, 0)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
     context.strokeStyle = "black";
     context.lineWidth = 20;
+    context.fillStyle = "rgba(0, 0, 0, 0)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
 
     let mouseX = 0;
     let mouseY = 0;
@@ -63,16 +91,4 @@
         // Only return the alpha channel
         return image.filter((_, index) => (index - 3) % 4 == 0);
     }
-})();
-
-(async function() {
-    const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
-
-    conn.on("pong", function(string) {
-        console.log("pong:", string);
-    });
-
-    await conn.start();
-    console.log(conn.connection.connectionId);
-    conn.invoke("ping", "rabbit");
 })();

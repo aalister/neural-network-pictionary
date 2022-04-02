@@ -1,0 +1,22 @@
+#menu {
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form:not(:last-of-type) {
+    margin-bottom: 1rem;
+}
+
+input {
+    padding: 1rem;
+}
+
+input:focus {
+    outline: none;
+}

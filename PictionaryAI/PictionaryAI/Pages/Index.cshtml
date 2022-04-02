@@ -10,15 +10,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link href="~/css/site.css" rel="stylesheet">
-    <script src="~/lib/signalr/signalr.js"></script>
-    <script defer src="~/js/site.js"></script>
+    <link href="~/css/styles.css" rel="stylesheet">
+    <link href="~/css/home.css" rel="stylesheet">
 </head>
 <body>
-    <canvas id="canvas" width="560" height="560">
-        HTML5 canvas not supported
-    </canvas>
-    <br>
-    <button id="submit">Submit</button>
+    <div id="menu">
+        <form id="join-menu" action="~/game" autocomplete="off">
+            <input type="text" name="code" placeholder="Enter the game code">
+            <input id="join-button" type="submit" value="Join Game">
+        </form>
+        <form action="~/game">
+            <input id="host-button" type="submit" value="Create Game">
+        </form>
+    </div>
 </body>
 </html>

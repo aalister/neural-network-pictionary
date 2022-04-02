@@ -3,11 +3,22 @@
 @{
 }
 
-<html>
-    <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-    </head>
-    <body>
-        <p>The screen works</p>
-    </body>
+    <script src="~/lib/signalr/signalr.js"></script>
+    <link href="~/css/styles.css" rel="stylesheet">
+    <script defer src="~/js/game.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width="560" height="560">
+        HTML5 canvas not supported
+    </canvas>
+    <br>
+    <button id="submit">Submit</button>
+</body>
 </html>
