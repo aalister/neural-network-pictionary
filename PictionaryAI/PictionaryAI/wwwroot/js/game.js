@@ -5,15 +5,26 @@
      * @type {CanvasRenderingContext2D}
      */
     const context = canvas.getContext("2d");
-    const bounds = canvas.getBoundingClientRect();
-    canvas.width = bounds.width;
-    canvas.height = bounds.height;
+    let bounds;
+
+    /**
+     * Update the canvas when it resizes.
+     */
+    function resize() {
+        bounds = canvas.getBoundingClientRect();
+
+        canvas.width = bounds.width;
+        canvas.height = bounds.height;
+
+        context.lineWidth = Math.ceil(canvas.width / 28);
+    }
+    new ResizeObserver(resize).observe(canvas);
+    resize();
 
     context.lineCap = "round";
     context.strokeStyle = "black";
-    context.lineWidth = Math.ceil(canvas.width / 28);
     context.fillStyle = "rgba(0, 0, 0, 0)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
     let mouseX = 0;
     let mouseY = 0;
@@ -146,14 +157,15 @@
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         inGame = true;
 
-        let countdown = Math.floor(duration / 1000);
-        timer.innerHTML = countdown;
+        countdown.style.visibility = "hidden";
+        let number = Math.floor(duration / 1000);
+        timer.innerHTML = number;
         prompt.innerHTML = promptName;
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         interval = setInterval(function() {
-            countdown--;
-            timer.innerHTML = countdown;
+            number--;
+            timer.innerHTML = number;
         }, 1000);
     });
 
@@ -181,6 +193,9 @@
 
         timer.innerHTML = 0;
         clearInterval(interval);
+
+        countdown.style.visibility = "visible";
+        countdown.innerHTML = "Round<br>Over";
     });
 
     await conn.start();
