@@ -2,31 +2,31 @@
 {
     public class User
     {
-        public User(string connectionId, Room room, bool isHost, string? name = null)
+        public User(uint id, string connectionId, Room room, bool isHost, string? name = null)
         {
-            Id = RandomContainer.GetRandomUint();
+            Id = id;
             ConnectionId = connectionId;
             Room = room;
             IsHost = isHost;
             Name = name ?? $"Player {Id}";
             Score = 0;
+            HasCompletedDrawing = false;
         }
 
         public uint Id { get; }
         public string ConnectionId { get; }
         public Room Room { get; }
-        public bool IsHost { get; private set; }
-        public string Name { get; private set; }
-        public uint Score { get; private set; }
+        public bool IsHost { get; set; }
+        public string Name { get; set; }
+        public uint Score { get; set; }
+        public bool HasCompletedDrawing { get; set; }
 
-        public void ChangeName(string newName)
+        public void AddScoreForCompletingDrawing(int timeTakenMillis, int roundLengthMillis)
         {
-            Name = newName;
-        }
-
-        public void ChangeIsHost(bool isHost)
-        {
-            IsHost = isHost;
+            HasCompletedDrawing = true;
+            const uint baseValue = 25;
+            const uint scaleValue = 75;
+            Score += baseValue + (uint)(((double)timeTakenMillis / (double)roundLengthMillis) * scaleValue);
         }
     }
 }

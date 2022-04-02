@@ -28,5 +28,25 @@ namespace PictionaryAI
                 await _roomManager.RemoveUser(_context, connectionId);
             }
         }
+
+        public async Task DrawingGuessed()
+        {
+            string connectionId = Context.ConnectionId;
+            if (!_roomManager.ConnectionIdExists(connectionId))
+            {
+                throw new InvalidOperationException("Tried to call drawing guessed when the player is not in a room");
+            }
+            Room room = _roomManager.GetRoomFromConnectionId(connectionId);
+            if (!room.IsStarted || !room.IsRoundInProgress)
+            {
+                throw new InvalidOperationException("Tried to call drawing guessed when a round is not in progress");
+            }
+            User user = room.GetUserFromConnectionId(connectionId);
+            if (user.HasCompletedDrawing)
+            {
+                throw new InvalidOperationException("Tried to call drawing guessed when player has already has their drawing guessed");
+            }
+            await _roomManager.PlayerCompletedDrawing(connectionId);
+        }
     }
 }

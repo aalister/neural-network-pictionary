@@ -40,9 +40,12 @@ namespace PictionaryAI
             return _connIdToRoom[connectionId];
         }
 
+        const int countdownMillis = 3000;
+        const int roundLengthMillis = 10000;
+        const int roundBreakMillis = 5000;
         public Room CreateRoom()
         {
-            Room room = new Room();
+            Room room = new Room(countdownMillis, roundLengthMillis, roundBreakMillis);
             _rooms.Add(room.Id, room);
             return room;
         }
@@ -77,7 +80,7 @@ namespace PictionaryAI
         {
             Room room = GetRoomFromConnectionId(connectionId);
             User user = room.GetUserFromConnectionId(connectionId);
-            user.ChangeName(name);
+            user.Name = name;
             await SendPlayerListChange(context, room);
         }
 
@@ -93,8 +96,7 @@ namespace PictionaryAI
             {
                 throw new InvalidOperationException("The room is already started, when trying to start the game");
             }
-            int countdownMillis = 3000; //Maybe get this value from configuration instead?
-            room.StartGame(context, this, countdownMillis);
+            room.StartGame(context, this);
             await context.Clients.Group(room.Id).SendAsync("DoCountdown", countdownMillis);
         }
 
@@ -109,8 +111,7 @@ namespace PictionaryAI
             {
                 throw new InvalidOperationException("The room is currently in a round, when trying to start a new round");
             }
-            int roundLengthMillis = 10000; //Maybe get this value from configuration instead?
-            (string prompt, uint promptIndex) = room.StartNewRound(context, this, roundLengthMillis);
+            (string prompt, uint promptIndex) = room.StartNewRound(context, this);
             await context.Clients.Group(room.Id).SendAsync("NewRound", prompt, promptIndex, roundLengthMillis);
         }
 
@@ -125,9 +126,17 @@ namespace PictionaryAI
             {
                 throw new InvalidOperationException("The room is currently in a round, when trying to end a round");
             }
-            int roundBreakMillis = 5000; //Maybe get this value from configuration instead?
-            room.EndRound(context, this, roundBreakMillis);
+            room.EndRound(context, this);
             await context.Clients.Group(room.Id).SendAsync("EndRound");
+        }
+
+        public async Task PlayerCompletedDrawing(IHubContext<PictionaryHub> context, string connectionId)
+        {
+            Room room = GetRoomFromConnectionId(connectionId);
+            User user = room.GetUserFromConnectionId(connectionId);
+            await room.PlayerCompletedDrawing(context, this, connectionId);
+            await SendPlayerListChange(context, room);
+            await context.Clients.Group(room.Id).SendAsync("PlayerScored", user.Id);
         }
     }
 }

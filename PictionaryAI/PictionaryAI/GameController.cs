@@ -41,6 +41,7 @@ namespace PictionaryAI
         }
 
         [HttpPost]
+        [Route("setname/{name}")]
         public async Task<ActionResult> SetName([FromQuery(Name = "id")] string connectionId, [FromRoute(Name = "name")] string name)
         {
             if (!_roomManager.ConnectionIdExists(connectionId))
@@ -52,6 +53,7 @@ namespace PictionaryAI
         }
 
         [HttpPost]
+        [Route("startgame")]
         public async Task<ActionResult> StartGame([FromQuery(Name = "id")] string connectionId)
         {
             if (!_roomManager.ConnectionIdExists(connectionId))
