@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictionaryAI", "PictionaryAI\PictionaryAI.csproj", "{DF3DB101-B5F1-475A-81BA-2D3B4110B083}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF3DB101-B5F1-475A-81BA-2D3B4110B083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF3DB101-B5F1-475A-81BA-2D3B4110B083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF3DB101-B5F1-475A-81BA-2D3B4110B083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF3DB101-B5F1-475A-81BA-2D3B4110B083}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {77F1C3CA-E44D-49A2-B035-45F8410C6F43}
+	EndGlobalSection
+EndGlobal
