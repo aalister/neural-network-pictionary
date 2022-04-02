@@ -1,29 +1,35 @@
 ﻿(async function() {
     const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
 
-    conn.on("playerListChange", function(json) {
-        console.log(json);
+    conn.on("playerListChange", function(players) {
+        console.log(players);
     });
 
     await conn.start();
     const connId = conn.connection.connectionId;
 
-    const { code } = new Proxy(new URLSearchParams(window.location.search), {
+    let { code } = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop)
     });
-
     if (code) {
         joinGame(code);
     } else {
         hostGame();
     }
 
+    document.getElementById("copy-code").addEventListener("click", function(_) {
+        navigator.clipboard.writeText(code);
+    });
+
     async function joinGame(code) {
+        document.getElementById("code").innerHTML = code;
         await fetch(`/api/game/join/${code}?id=${connId}`, { method: "POST" });
     }
 
     async function hostGame() {
-        const code = await fetch(`/api/game/host?id=${connId}`, { method: "POST" });
+        const response = await fetch(`/api/game/host?id=${connId}`, { method: "POST" });
+        code = await response.text();
+        document.getElementById("code").innerHTML = code;
     }
 })();
 
@@ -60,7 +66,7 @@
         }
     });
 
-    canvas.addEventListener("mouseup", function(event) {
+    document.body.addEventListener("mouseup", function(event) {
         setMousePos(event);
         isDrawing = false;
     });
@@ -69,11 +75,6 @@
         mouseX = event.clientX - bounds.left;
         mouseY = event.clientY - bounds.top;
     }
-
-    document.getElementById("submit").addEventListener("click", function(_) {
-        const image = downScaleCanvas();
-        console.log(image);
-    });
 
     function downScaleCanvas() {
         const result = document.createElement("canvas");
