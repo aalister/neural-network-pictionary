@@ -4,8 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<RoomManager>();
-builder.Services.AddControllers();
 builder.Services.AddSignalR();
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

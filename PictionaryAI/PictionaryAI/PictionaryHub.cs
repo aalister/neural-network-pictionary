@@ -5,10 +5,12 @@ namespace PictionaryAI
     public class PictionaryHub : Hub
     {
         private readonly RoomManager _roomManager;
+        private readonly IHubContext<PictionaryHub> _context;
 
-        public PictionaryHub(RoomManager roomManager)
+        public PictionaryHub(RoomManager roomManager, IHubContext<PictionaryHub> context)
         {
             _roomManager = roomManager;
+            _context = context;
         }
 
         public async Task Ping(string test)
@@ -23,7 +25,7 @@ namespace PictionaryAI
             if (_roomManager.ConnectionIdExists(connectionId))
             {
                 Room room = _roomManager.GetRoomFromConnectionId(connectionId);
-                await _roomManager.RemoveUser(this, connectionId);
+                await _roomManager.RemoveUser(_context, connectionId);
             }
         }
     }

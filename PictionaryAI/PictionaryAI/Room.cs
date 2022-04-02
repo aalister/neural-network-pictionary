@@ -8,8 +8,7 @@
         {
             _connIdToUser = new Dictionary<string, User>();
             string newId = Guid.NewGuid().ToString();
-            Id = newId.Substring(newId.IndexOf('-'));
-
+            Id = newId.Substring(0, newId.IndexOf('-'));
         }
 
         public string Id { get; }

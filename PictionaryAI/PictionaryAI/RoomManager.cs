@@ -37,7 +37,7 @@ namespace PictionaryAI
             {
                 throw new ArgumentException("Connection id does not exist");
             }
-            return _rooms[connectionId];
+            return _connIdToRoom[connectionId];
         }
 
         public Room CreateRoom()
@@ -47,7 +47,7 @@ namespace PictionaryAI
             return room;
         }
 
-        public async Task<User> AddUser(Hub context, string roomId, string connectionId, string? name = null)
+        public async Task<User> AddUser(IHubContext<PictionaryHub> context, string roomId, string connectionId, string? name = null)
         {
             Room room = GetRoomFromRoomId(roomId);
             User user = room.AddUser(connectionId, name);
@@ -57,15 +57,16 @@ namespace PictionaryAI
             return user;
         }
 
-        public async Task RemoveUser(Hub context, string connectionId)
+        public async Task RemoveUser(IHubContext<PictionaryHub> context, string connectionId)
         {
             Room room = GetRoomFromConnectionId(connectionId);
             User user = room.RemoveUser(connectionId);
+            _connIdToRoom.Remove(user.ConnectionId);
             await context.Groups.RemoveFromGroupAsync(user.ConnectionId, room.Id);
             await SendPlayerListChange(context, room);
         }
 
-        public async Task ChangeUserName(Hub context, string connectionId, string name)
+        public async Task ChangeUserName(IHubContext<PictionaryHub> context, string connectionId, string name)
         {
             Room room = GetRoomFromConnectionId(connectionId);
             User user = room.GetUserFromConnectionId(connectionId);
@@ -73,7 +74,7 @@ namespace PictionaryAI
             await SendPlayerListChange(context, room);
         }
 
-        private async Task SendPlayerListChange(Hub context, Room room)
+        private async Task SendPlayerListChange(IHubContext<PictionaryHub> context, Room room)
         {
             await context.Clients.Group(room.Id).SendAsync("PlayerListChange", room.GetUsers().Select(user => new Models.Player(user.Id, user.IsHost, user.Name, user.Score)));
         }

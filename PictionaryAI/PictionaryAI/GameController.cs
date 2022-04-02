@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace PictionaryAI
 {
@@ -8,9 +9,9 @@ namespace PictionaryAI
     public class GameController : ControllerBase
     {
         private readonly RoomManager _roomManager;
-        private readonly PictionaryHub _pictionaryHub;
+        private readonly IHubContext<PictionaryHub> _pictionaryHub;
 
-        public GameController(RoomManager roomManager, PictionaryHub pictionaryHub)
+        public GameController(RoomManager roomManager, IHubContext<PictionaryHub> pictionaryHub)
         {
             _roomManager = roomManager;
             _pictionaryHub = pictionaryHub;
