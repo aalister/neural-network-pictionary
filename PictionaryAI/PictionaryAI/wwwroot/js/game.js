@@ -19,11 +19,11 @@
     }
 
     async function joinGame(code) {
-        await fetch(`/api/game/join/${code}?id=${connId}`);
+        await fetch(`/api/game/join/${code}?id=${connId}`, { method: "POST" });
     }
 
     async function hostGame() {
-        const code = await fetch(`/api/game/host?id=${connId}`);
+        const code = await fetch(`/api/game/host?id=${connId}`, { method: "POST" });
     }
 })();
 
