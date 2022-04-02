@@ -5,9 +5,10 @@
     const context = canvas.getContext("2d");
     const bounds = canvas.getBoundingClientRect();
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "rgba(0, 0, 0, 0)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
     context.strokeStyle = "black";
-    context.lineWidth = 8;
+    context.lineWidth = 20;
 
     let mouseX = 0;
     let mouseY = 0;
@@ -38,5 +39,28 @@
     function setMousePos(event) {
         mouseX = event.clientX - bounds.left;
         mouseY = event.clientY - bounds.top;
+    }
+
+    document.getElementById("submit").addEventListener("click", function(_) {
+        const image = downScaleCanvas();
+        console.log(image);
+    });
+
+    function downScaleCanvas() {
+        const result = document.createElement("canvas");
+
+        result.width = 28;
+        result.height = 28;
+
+        /** @type {CanvasRenderingContext2D} */
+        const resultContext = result.getContext("2d");
+        resultContext.drawImage(canvas, 0, 0, 28, 28);
+
+        // For testing
+        document.body.append(result);
+
+        const image = resultContext.getImageData(0, 0, 28, 28).data;
+        // Only return the alpha channel
+        return image.filter((_, index) => (index - 3) % 4 == 0);
     }
 })();
