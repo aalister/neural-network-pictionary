@@ -14,14 +14,19 @@
     <link href="~/css/home.css" rel="stylesheet">
 </head>
 <body>
-    <div id="menu">
-        <form id="join-menu" action="~/game" autocomplete="off">
-            <input type="text" name="code" placeholder="Enter the game code">
-            <input id="join-button" type="submit" value="Join Game">
-        </form>
-        <form action="~/game">
-            <input id="host-button" type="submit" value="Create Game">
-        </form>
+    <div id="content-container">
+        <img id="banner" src=~/img/banner.png />
+        <div id="menu">
+            <p id="welcome-text">Welcome!</p>
+            <form class="form-container" action="~/game">
+                <input id="host-button" class="button primary-button clicky menu-button" type="submit" value="Create Game">
+            </form>
+            <p id="or-text">or</p>
+            <form id="join-menu" class="form-container" action="~/game" autocomplete="off">
+                <input id="join-code" type="text" name="code" placeholder="Enter the game link">
+                <input id="join-button" class="button secondary-button clicky" type="submit" value="Join Game">
+            </form>
+        </div>
     </div>
 </body>
 </html>

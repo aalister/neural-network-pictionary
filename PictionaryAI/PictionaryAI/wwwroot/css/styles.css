@@ -13,14 +13,6 @@ body {
     margin: 0;
 }
 
-input, button {
-    padding: 1rem;
-}
-
-input:focus {
-    outline: none;
-}
-
 body {
     background: url("../img/background.svg") repeat;
     background-size: 1600px 1200px;
@@ -40,4 +32,45 @@ body {
     to {
         background-position: -1600px -1200px;
     }
+}
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: url('../font/Roboto-Light.ttf') format('truetype');
+    font-weight: lighter;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../font/Roboto-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+input:focus {
+    outline: none;
+}
+
+.button {
+    padding: 1rem;
+    font-family: 'Roboto';
+    font-weight: normal;
+    font-size: 16px;
+    color: white;
+    background-color: #5e4ae3;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: #d8e2f5 0.5rem 0.5rem;
+}
+    .button.clicky:hover {
+        transform: translate(-0.25rem, -0.25rem);
+        box-shadow: #d8e2f5 0.75rem 0.75rem;
+    }
+
+.primary-button {
+    background-color: #f26ca7;
+}
+
+.secondary-button {
+    background-color: #9eb7e5;
 }

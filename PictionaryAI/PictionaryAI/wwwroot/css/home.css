@@ -1,7 +1,78 @@
+#content-container {
+    position: fixed;
+    width: 60rem;
+    top: 50%;
+    left: 50%;
+    margin-left: -30rem;
+    margin-top: -300px;
+    text-align: center;
+}
+
+#banner {
+    width: 100%;
+}
+
 #menu {
+    background-color: white;
+    padding: 4rem;
+    border-radius: 4rem;
+    text-align: center;
+    width: 40rem;
+    margin: 0 auto;
+}
+
+#welcome-text {
+    color: #f26ca7;
+    font-size: 36px;
+    margin: 0;
+    letter-spacing: 4px;
+    font-family: 'Roboto Light';
+    font-weight: lighter;
+    margin-bottom: 2rem;
+}
+
+
+#or-text {
+    color: #9eb7e5;
+    font-size: 24px;
+    margin: 0;
+    letter-spacing: 4px;
+    font-family: 'Roboto Light';
+    font-weight: lighter;
+}
+
+.form-container {
+    margin: 1rem 0 !important;
+}
+
+#host-button {
+    padding: 1.5rem 0;
+    border-radius: 2rem;
+    font-size: 24px;
+}
+
+#join-menu {
     display: flex;
-    flex-direction: column;
-    width: 30rem;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: stretch;
+}
+
+#join-code {
+    flex: 1 1 auto;
+    border-radius: 1rem 0 0 1rem;
+    border: 1px solid #9eb7e5;
+    box-shadow: #d8e2f5 0.5rem 0.5rem;
+    padding-left: 1rem;
+}
+    #join-code::placeholder {
+        color: #9eb7e5;
+    }
+
+#join-button {
+    padding: 1rem 0;
+    flex: 0 0 10rem;
+    border-radius: 0 1rem 1rem 0;
 }
 
 form {
