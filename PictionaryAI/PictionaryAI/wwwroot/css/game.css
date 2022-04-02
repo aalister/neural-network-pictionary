@@ -102,8 +102,6 @@ body {
 }
 
 #canvas-inner {
-    width: 560px;
-    height: 560px;
     position: relative;
 }
 
@@ -123,4 +121,6 @@ body {
 
 #canvas {
     border: .2rem solid black;
+    height: calc(100vh - 100px);
+    aspect-ratio: 1;
 }

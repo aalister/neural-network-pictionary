@@ -1,13 +1,17 @@
 ﻿(async function() {
     const canvas = document.getElementById("canvas");
 
-    /** @type {CanvasRenderingContext2D} */
+    /**
+     * @type {CanvasRenderingContext2D}
+     */
     const context = canvas.getContext("2d");
     const bounds = canvas.getBoundingClientRect();
+    canvas.width = bounds.width;
+    canvas.height = bounds.height;
 
     context.lineCap = "round";
     context.strokeStyle = "black";
-    context.lineWidth = 20;
+    context.lineWidth = Math.ceil(canvas.width / 28);
     context.fillStyle = "rgba(0, 0, 0, 0)";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -68,7 +72,9 @@
         result.width = 28;
         result.height = 28;
 
-        /** @type {CanvasRenderingContext2D} */
+        /**
+         * @type {CanvasRenderingContext2D}
+         */
         const resultContext = result.getContext("2d");
         resultContext.drawImage(canvas, 0, 0, 28, 28);
 
