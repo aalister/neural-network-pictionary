@@ -46,7 +46,7 @@ namespace PictionaryAI
             {
                 throw new InvalidOperationException("Tried to call drawing guessed when player has already has their drawing guessed");
             }
-            await _roomManager.PlayerCompletedDrawing(connectionId);
+            await _roomManager.PlayerCompletedDrawing(_context, connectionId);
         }
     }
 }
