@@ -64,3 +64,15 @@
         return image.filter((_, index) => (index - 3) % 4 == 0);
     }
 })();
+
+(async function() {
+    const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
+
+    conn.on("pong", function(string) {
+        console.log("pong:", string);
+    });
+
+    await conn.start();
+    console.log(conn.connection.connectionId);
+    conn.invoke("ping", "rabbit");
+})();
