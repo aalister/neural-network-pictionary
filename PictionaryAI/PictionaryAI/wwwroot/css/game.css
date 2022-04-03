@@ -311,21 +311,21 @@ body {
 #guess-container {
     position: absolute;
     width: 21rem;
-    height: 10rem;
     right: -23rem;
     top: 0;
     background-color: white;
     border-radius: 4rem;
     padding: 2rem;
     box-sizing: border-box;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: center;
+}
+
+#guess-title {
+    margin: 0;
+    color: #9eb7e5;
+    font-size: 14px;
 }
 
 #speech-bubble {
-    margin: 0;
     font-size: 3rem;
     color: #f26ca7;
 }
