@@ -41,7 +41,7 @@ namespace PictionaryAI
         }
 
         const int countdownMillis = 3000;
-        const int roundLengthMillis = 10000;
+        const int roundLengthMillis = 20000;
         const int roundBreakMillis = 5000;
         public Room CreateRoom()
         {

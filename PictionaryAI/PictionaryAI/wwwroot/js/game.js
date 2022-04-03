@@ -90,7 +90,7 @@
 
         setTimeout(function() {
             guessInterval = setInterval(predict, 1000);
-        }, 3000);
+        }, 2000);
 
         currentPromptName = promptName;
         currentPromptIndex = promptIndex;
@@ -187,6 +187,7 @@
         const response = await fetch(`/api/game/host?id=${connId}`, { method: "POST" });
         code = await response.text();
         document.getElementById("code").value = code;
+        history.pushState(null, '', `${location.origin}${location.pathname}?code=${code}`);
         
         // Make start game button visible
         startButton.style.display = "block";
@@ -253,7 +254,7 @@
         prediction_sorted.reverse();
         console.log(prediction_sorted.indexOf(prediction[currentPromptIndex]));
 
-        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 10) {
+        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 5) {
             // Don't allow guesses after the round has finished
             if (isRunning) {
                 isRunning = false;
