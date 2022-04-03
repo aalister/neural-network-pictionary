@@ -316,7 +316,7 @@
         prediction_sorted.reverse();
         console.log(prediction_sorted.indexOf(prediction[currentPromptIndex]));
 
-        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 3) {
+        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 5) {
             // Don't allow guesses after the round has finished
             if (isRunning) {
                 isRunning = false;
