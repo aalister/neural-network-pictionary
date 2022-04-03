@@ -15,6 +15,14 @@
         });
     }
 
+    function clearGuessedPlayers() {
+        for (const player of players) {
+            let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
+            playerEle.removeAttribute("guessed");
+            playerEle.querySelector(".player-increase").classList.remove("showing");
+        }
+    }
+
     /**
      * Display error message when the server closes.
      */
@@ -117,12 +125,7 @@
         hasDrawn = false;
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        //Clear player guessed
-        for (const player of players) {
-            let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
-            playerEle.removeAttribute("guessed");
-            playerEle.querySelector(".player-increase").classList.remove("showing");
-        }
+        clearGuessedPlayers();
 
         interval = setInterval(function() {
             number--;
@@ -188,6 +191,8 @@
             if (a.name < b.name) return -1;
             return 0;
         });
+
+        clearGuessedPlayers();
 
         document.getElementById("results").classList.add("active");
         document.getElementById("first-place").innerHTML = players[0].name;
