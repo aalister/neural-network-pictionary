@@ -18,7 +18,7 @@
 
         context.lineWidth = Math.ceil(canvas.width / 28);
     }
-    new ResizeObserver(resize).observe(canvas);
+    new ResizeObserver(resize).observe(document.body);
     resize();
 
     context.lineCap = "round";
