@@ -176,6 +176,28 @@
         countdown.innerHTML = "Round Over";
     });
 
+    conn.on("showResults", function(players) {
+        console.log("results");
+        players = players.sort(function(a, b) {
+            if (a.score < b.score) return 1;
+            if (a.score > b.score) return -1;
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+        });
+
+        document.getElementById("results").classList.add("active");
+        document.getElementById("first-place").innerHTML = players[0].name;
+
+        if (players.length > 1) {
+            document.getElementById("second-place").innerHTML = players[1].name;
+        }
+
+        if (players.length > 2) {
+            document.getElementById("third-place").innerHTML = players[2].name;
+        }
+    });
+
     await conn.start();
     const connId = conn.connection.connectionId;
 
