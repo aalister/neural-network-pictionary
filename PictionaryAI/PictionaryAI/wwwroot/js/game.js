@@ -4,6 +4,7 @@
     let players = [];
     const playerList = document.getElementById("player-list");
     const playerTemplate = document.getElementById("player-template");
+    let hasShownResults = false;
 
     function sortPlayers() {
         players = players.sort(function (a, b) {
@@ -143,7 +144,7 @@
     conn.on("playerScored", function(playerId, newScore, changeInScore) {
         console.log(`Player scored: ${playerId}, ${newScore}, ${changeInScore}`);
         let player = players.find(p => p.id == playerId);
-        if (player) {
+        if (!hasShownResults && player) {
             player.score = newScore;
             player.hasGuessed = true;
             sortPlayers();
@@ -192,6 +193,7 @@
             return 0;
         });
 
+        hasShownResults = true;
         clearGuessedPlayers();
 
         document.getElementById("results").classList.add("active");
