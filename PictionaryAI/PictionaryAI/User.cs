@@ -26,7 +26,7 @@
             HasCompletedDrawing = true;
             const uint baseValue = 25;
             const uint scaleValue = 75;
-            Score += baseValue + (uint)(((double)timeTakenMillis / (double)roundLengthMillis) * scaleValue);
+            Score += baseValue + (uint)((1 - ((double)timeTakenMillis / (double)roundLengthMillis)) * scaleValue);
         }
     }
 }
