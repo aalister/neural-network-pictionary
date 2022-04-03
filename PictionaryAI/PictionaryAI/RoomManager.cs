@@ -86,7 +86,7 @@ namespace PictionaryAI
 
         private async Task SendPlayerListChange(IHubContext<PictionaryHub> context, Room room)
         {
-            await context.Clients.Group(room.Id).SendAsync("PlayerListChange", room.GetUsers().Select(user => new Models.Player(user.Id, user.IsHost, user.Name, user.Score)));
+            await context.Clients.Group(room.Id).SendAsync("PlayerListChange", room.GetUsers().Select(user => new Models.Player(user.Id, user.IsHost, user.Name, user.Score, user.HasCompletedDrawing)));
         }
 
         public async Task StartGame(IHubContext<PictionaryHub> context, string roomId)

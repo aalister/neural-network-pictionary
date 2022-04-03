@@ -20,6 +20,7 @@
     <script defer src="~/js/mainContainerResize.js"></script>
 </head>
 <body>
+    <div id="player-template" class="player" player-id=-1 style="display:none"><div class="player-name"></div><div class="player-score"></div></div>
     <div id="everything-container">
         <div id="banner">
             <div id="timer-wrapper">
@@ -37,7 +38,9 @@
         <div id="main-container">
             <div id="players-container">
                 <p id="players-title">Players:</p>
-                <ul id="player-list"></ul>
+                <div id="player-list">
+
+                </div>
                 <button id="start-button" class="primary-button button clicky">Start</button>
             </div>
             <div id="canvas-container">

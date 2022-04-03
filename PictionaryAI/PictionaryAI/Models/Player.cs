@@ -2,7 +2,7 @@
 {
     public class Player
     {
-        public Player(uint id, bool isHost, string name, uint score)
+        public Player(uint id, bool isHost, string name, uint score, bool hasGuessed)
         {
             Id = id;
             IsHost = isHost;
@@ -14,5 +14,6 @@
         public bool IsHost { get; set; }
         public string Name { get; set; }
         public uint Score { get; set; }
+        public bool HasGuessed { get; set; }
     }
 }

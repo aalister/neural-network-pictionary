@@ -64,6 +64,7 @@
 
     let players = [];
     const playerList = document.getElementById("player-list");
+    const playerTemplate = document.getElementById("player-template");
 
     /**
      * Display error message when the server closes.
@@ -88,7 +89,17 @@
         playerList.innerHTML = "";
 
         for (const player of players) {
-            playerList.innerHTML += `<li><span>${player.name}</span><span>${player.score}</span></li>`;
+            let clone = playerTemplate.cloneNode(true);
+            clone.id = "";
+            clone.setAttribute("player-id", player.id);
+            clone.style.display = "";
+            clone.querySelector(".player-name").innerHTML = player.name;
+            clone.querySelector(".player-score").innerHTML = player.score;
+            if (player.hasGuessed) {
+                clone.setAttribute("guessed", "");
+            }
+            //playerList.innerHTML += `<li><span>${player.name}</span><span>${player.score}</span></li>`;
+            playerList.appendChild(clone);
         }
     });
 
@@ -137,6 +148,11 @@
         prompt.innerHTML = promptName;
         context.clearRect(0, 0, canvas.width, canvas.height);
 
+        //Clear player guessed
+        for (const player of players) {
+            document.querySelector(`.player[player-id='${player.id}']`).removeAttribute("guessed");
+        }
+
         interval = setInterval(function() {
             number--;
             timer.innerHTML = number;
@@ -152,14 +168,6 @@
      */
     conn.on("playerScored", function(playerId) {
         console.log(`Player scored: ${playerId}`);
-        
-        const index = players.map(player => player.id).indexOf(playerId);
-        const node = playerList.children.item(index);
-        node.classList.add("active");
-
-        setTimeout(function() {
-            node.classList.remove("active");
-        }, 2000);
     });
 
     /**
