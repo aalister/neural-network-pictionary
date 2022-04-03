@@ -221,6 +221,8 @@
     });
 
     let model = await tf.loadLayersModel('model/model.json');
+    // Process useless data to prevent freeze when the first guess is made
+    model.predict(tf.randomNormal([1, 28, 28, 1])).dataSync();
 
     function processImage(image) {
         return tf.tidy(() => {
@@ -230,6 +232,11 @@
     }
 
     function predict() {
+        // Only make prediction if the player has drawn on their canvas
+        if (!hasDrawn) {
+            return;
+        }
+
         const result = document.createElement("canvas");
 
         result.width = 28;
