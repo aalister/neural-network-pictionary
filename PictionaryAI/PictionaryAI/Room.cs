@@ -146,7 +146,7 @@ namespace PictionaryAI
             {
                 previousPrompts.RemoveAt(0);
             }
-            previousPrompts.Append(promptIndex);
+            previousPrompts.Add(promptIndex);
             string prompt = _availablePrompts[promptIndex];
             return (prompt, promptIndex);
         }
