@@ -15,34 +15,35 @@
 
     <script src="~/lib/signalr/signalr.js"></script>
     <script defer src="~/js/game.js"></script>
+    <script defer src="~/js/mainContainerResize.js"></script>
 </head>
 <body>
-    <div id="banner">
-        <div id="timer-wrapper">
-            <div id="timer"></div>
-            <button id="start-button">Start</button>
+    <div id="everything-container">
+        <div id="banner">
+            <div id="timer-wrapper">
+                <div id="timer"></div>
+            </div>
+
+            <div id="prompt">&nbsp;</div>
+
+            <div id="code-wrapper">
+                <span id="code"></span>
+                <button id="copy-code-button">Copy</button>
+            </div>
         </div>
-
-        <div id="prompt">&nbsp;</div>
-
-        <div id="code-wrapper">
-            <span id="code"></span>
-            <button id="copy-code-button">Copy</button>
-        </div>
-    </div>
-
-    <div id="game">
-        <div id="sidebar">
-            <h3>Players</h3>
-            <ul id="player-list"></ul>
-        </div>
-
-        <div id="canvas-wrapper">
-            <div id="canvas-inner">
-                <div id="countdown">3</div>
+        <div id="main-container">
+            <div id="players-container">
+                <p id="players-title">Players:</p>
+                <ul id="player-list"></ul>
+                <button id="start-button" class="primary-button button clicky">Start</button>
+            </div>
+            <div id="canvas-container">
                 <canvas id="canvas">
                     HTML5 canvas not supported
                 </canvas>
+                <div id="canvas-overlay" style="visibility: hidden;">
+                    <p id="canvas-overlay-text"></p>
+                </div>
             </div>
         </div>
     </div>

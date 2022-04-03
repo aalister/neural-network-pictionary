@@ -128,7 +128,8 @@
 
     const startButton = document.getElementById("start-button");
     const timer = document.getElementById("timer");
-    const countdown = document.getElementById("countdown");
+    const countdownBackground = document.getElementById("canvas-overlay");
+    const countdown = document.getElementById("canvas-overlay-text");
 
     /**
      * Launch the countdown.
@@ -140,7 +141,7 @@
         timer.style.display = "inline";
 
         let number = Math.floor(duration / 1000);
-        countdown.style.visibility = "visible";
+        countdownBackground.style.visibility = "visible";
         countdown.innerHTML = number
         
         const interval = setInterval(function() {
@@ -148,7 +149,7 @@
             countdown.innerHTML = number;
 
             if (number == 0) {
-                countdown.style.visibility = "hidden";
+                countdownBackground.style.visibility = "hidden";
                 clearInterval(interval);
             }
         }, 1000);
@@ -164,7 +165,7 @@
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         inGame = true;
 
-        countdown.style.visibility = "hidden";
+        countdownBackground.style.visibility = "hidden";
         let number = Math.floor(duration / 1000);
         timer.innerHTML = number;
         prompt.innerHTML = promptName;
@@ -205,8 +206,8 @@
         timer.innerHTML = 0;
         clearInterval(interval);
 
-        countdown.style.visibility = "visible";
-        countdown.innerHTML = "Round<br>Over";
+        countdownBackground.style.visibility = "visible";
+        countdown.innerHTML = "Round Over";
     });
 
     await conn.start();

@@ -1,6 +1,7 @@
 body {
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .scrim {
@@ -40,12 +41,23 @@ body {
     margin-top: 1rem;
 }
 
+#everything-container {
+    height: 100vh;
+    margin: 0 auto;
+}
+
 #banner {
-    align-items: center;
-    background: #ddd;
+    height: 6rem;
+    width: calc(100% + 46rem);
+    transform: translate(-23rem, 0);
+    margin: 0 auto;
     display: flex;
+    flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 1rem;
+    align-items: center;
+    background: white;
+    border-radius: 0 0 2rem 2rem;
+    padding: 0 2rem;
 }
 
 #timer-wrapper {
@@ -54,14 +66,14 @@ body {
 
 #timer {
     display: none;
-}
-
-#start-button {
-    display: none;
+    color: #9eb7e5;
+    font-family: "Roboto";
+    font-size: 36px;
 }
 
 #prompt {
-    font-size: 3rem;
+    font-size: 4rem;
+    color: #f26ca7;
 }
 
 #code-wrapper {
@@ -75,13 +87,34 @@ body {
     margin-right: .6rem;
 }
 
-#game {
-    display: flex;
+
+
+
+
+#main-container {
+    background-color: white;
+    margin: 2rem auto;
+    border-radius: 4rem;
+    padding: 2rem;
+    position: relative;
+    width: 100%;
 }
 
-#sidebar {
-    padding: 0 1rem;
-    width: 20rem;
+#players-container {
+    position: absolute;
+    width: 21rem;
+    left: -23rem;
+    top: 0;
+    background-color: white;
+    border-radius: 4rem;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+#players-title {
+    margin: 0;
+    font-size: 3rem;
+    color: #f26ca7;
 }
 
 #player-list {
@@ -89,45 +122,57 @@ body {
     padding: 0;
 }
 
-#player-list li {
-    display: flex;
-    justify-content: space-between;
+    #player-list li {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        background: white;
+    }
+
+        #player-list li.active {
+            background: goldenrod;
+        }
+
+
+#start-button {
+    display: none;
+    width: 100%;
+}
+
+
+#canvas-container {
+    width: 100%;
+    height: 100%;
+    border: .1rem solid #9eb7e5;
     position: relative;
-    background: white;
-}
-
-#player-list li.active {
-    background: goldenrod;
-}
-
-#canvas-wrapper {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-}
-
-#canvas-inner {
-    position: relative;
-}
-
-#countdown {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 15rem;
-    visibility: hidden;
-    text-align: center;
+    border-radius: 2rem;
 }
 
 #canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 2rem;
+}
+
+#canvas-overlay {
+    width: 100%;
+    height: 100%;
     background: white;
-    border: .2rem solid black;
-    height: calc(100vh - 100px);
-    aspect-ratio: 1;
+    border-radius: 2rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#canvas-overlay-text {
+    color: #f26ca7;
+    font-size: 8rem;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }

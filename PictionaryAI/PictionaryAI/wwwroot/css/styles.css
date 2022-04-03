@@ -11,6 +11,7 @@ html {
 body {
     font-size: 1.6rem;
     margin: 0;
+    font-family: 'Roboto Light';
 }
 
 body {
@@ -65,6 +66,10 @@ input:focus {
     .button.clicky:hover {
         transform: translate(-0.25rem, -0.25rem);
         box-shadow: #d8e2f5 0.75rem 0.75rem;
+    }
+    .button.clicky:active {
+        transform: translate(0.5rem, 0.5rem);
+        box-shadow: none;
     }
 
 .primary-button {
