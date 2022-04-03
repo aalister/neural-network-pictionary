@@ -65,6 +65,7 @@
     let currentPromptName;
     let currentPromptIndex;
     let interval = null;
+    let guessInterval;
 
     /**
      * Start a new round with a particular prompt.
@@ -72,6 +73,7 @@
     conn.on("newRound", function(promptName, promptIndex, duration) {
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         isRunning = true;
+        guessInterval = setInterval(predict, 1000);
 
         currentPromptName = promptName;
         currentPromptIndex = promptIndex;
@@ -118,6 +120,7 @@
 
         timer.innerHTML = 0;
         clearInterval(interval);
+        clearInterval(guessInterval);
 
         countdownBackground.style.visibility = "visible";
         countdown.innerHTML = "Round Over";
@@ -229,14 +232,16 @@
         // Only return the alpha channel
         const image = resultContext.getImageData(0, 0, 28, 28);
         const prediction = model.predict(processImage(image)).dataSync();
-        console.log(prediction);
 
         let prediction_sorted = structuredClone(prediction);
         prediction_sorted.sort();
         prediction_sorted.reverse();
+        console.log(prediction_sorted.indexOf(prediction[currentPromptIndex]));
 
         if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 20) {
             conn.invoke("drawingGuessed");
+            new Audio("/sound/win.mp3").play();
+            clearInterval(guessInterval);
         } else {
             const guessIndex = prediction.indexOf(Math.max(...prediction));
         }
