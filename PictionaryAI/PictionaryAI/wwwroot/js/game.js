@@ -114,7 +114,7 @@
         for (const player of players) {
             let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
             playerEle.removeAttribute("guessed");
-            playerEle.querySelector(".player-increase").style.visibility = "hidden";
+            playerEle.querySelector(".player-increase").classList.remove("showing");
         }
 
         interval = setInterval(function() {
@@ -141,7 +141,7 @@
             playerEle.setAttribute("guessed", "");
             let increaseBalloon = playerEle.querySelector(".player-increase");
             increaseBalloon.innerHTML = `+${changeInScore}`;
-            increaseBalloon.style.visibility = "visible";
+            increaseBalloon.classList.add("showing");
         }
     });
 

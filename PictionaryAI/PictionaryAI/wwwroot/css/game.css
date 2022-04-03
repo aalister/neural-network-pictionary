@@ -226,6 +226,22 @@ body {
     font-size: 20px;
     text-align: center;
     z-index: 10;
+    visibility: hidden;
+}
+    .player-increase.showing {
+        visibility: visible;
+        animation: player-increase-slide-in 0.25s linear 1;
+    }
+
+@keyframes player-increase-slide-in {
+    0% {
+        transform: translate(8rem, 0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
 }
 
 #start-button {
