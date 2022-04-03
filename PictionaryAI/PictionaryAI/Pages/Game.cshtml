@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <div id="enter-name" class="scrim active">
+    <div id="enter-name" class="scrim">
         <div class="popup">
             <p id="set-name-title" class="popup-title">Enter Name:</p>
             <form id="set-name-container" autocomplete="off" onsubmit="return false;">
@@ -84,6 +84,20 @@
         <div class="popup">
             <p class="popup-title">Connection lost</p>
             <p class="popup-description">Try checking your internet connection. Otherwise, our server may be offline.</p>
+            <form action="~/">
+                <input class="popup-button button primary-button clicky" type="submit" value="Go Back">
+            </form>
+        </div>
+    </div>
+    
+    <div id="results" class="scrim">
+        <div class="popup">
+            <p class="popup-title">Results</p>
+            <div id="podium">
+                <div class="podium-place"><div id="second-place"></div><div id="second-place-podium">2</div></div>
+                <div class="podium-place"><div id="first-place"></div><div id="first-place-podium">1</div></div>
+                <div class="podium-place"><div id="third-place"></div><div id="third-place-podium">3</div></div>
+            </div>            
             <form action="~/">
                 <input class="popup-button button primary-button clicky" type="submit" value="Go Back">
             </form>
