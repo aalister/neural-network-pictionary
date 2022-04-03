@@ -87,7 +87,10 @@
     conn.on("newRound", function(promptName, promptIndex, duration) {
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         isRunning = true;
-        guessInterval = setInterval(predict, 1000);
+
+        setTimeout(function() {
+            guessInterval = setInterval(predict, 1000);
+        }, 3000);
 
         currentPromptName = promptName;
         currentPromptIndex = promptIndex;
