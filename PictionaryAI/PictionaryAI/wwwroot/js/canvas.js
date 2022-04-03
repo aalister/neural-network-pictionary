@@ -13,6 +13,7 @@ let maxCoordY = -Infinity;
 
 let isDrawing = false;
 let isRunning = false;
+let hasDrawn = false;
 context.lineCap = "round";
 
 /**
@@ -27,6 +28,8 @@ function clear() {
     minCoordY = Infinity;
     maxCoordX = -Infinity;
     maxCoordY = -Infinity;
+
+    hasDrawn = false;
 }
 
 /**
@@ -62,6 +65,7 @@ function getMousePos(event) {
 canvas.addEventListener("mousedown", function(event) {
     const { x, y } = getMousePos(event);
     isDrawing = isRunning;
+    hasDrawn = isRunning;
     context.beginPath();
     context.moveTo(x, y);
 });

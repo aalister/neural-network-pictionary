@@ -218,6 +218,11 @@
     }
 
     function predict() {
+        // Only make prediction if the player has drawn on their canvas
+        if (!hasDrawn) {
+            return;
+        }
+
         const result = document.createElement("canvas");
 
         result.width = 28;
