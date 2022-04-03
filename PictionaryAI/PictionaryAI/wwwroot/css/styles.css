@@ -62,6 +62,7 @@ input:focus {
     border-radius: 1rem;
     border: none;
     box-shadow: #d8e2f5 0.5rem 0.5rem;
+    cursor: pointer;
 }
     .button.clicky:hover {
         transform: translate(-0.25rem, -0.25rem);
