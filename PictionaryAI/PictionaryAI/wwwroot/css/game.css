@@ -284,7 +284,7 @@ body {
 }
 
 #mascot-container img {
-    animation: bob 2s ease infinite;
+    animation: bob 4s ease infinite;
     width: 20rem;
 }
 
@@ -316,10 +316,62 @@ body {
 
 @keyframes bob {
     0%, 100% {
-        transform: translate(0, 2rem);
+        transform: rotateZ(-5deg) translate(0, -2rem);
+    }
+
+    25%, 75% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: rotateZ(5deg) translate(0, -2rem);
+    }
+
+    /* 0%, 100% {
+        transform: translate(0, -2rem);
     }
 
     50% {
         transform: translate(0, 0);
-    }
+    } */
+}
+
+#podium {
+    margin: 4rem 0 3rem 0;
+    display: flex;
+}
+
+.podium-place {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 10rem;
+}
+
+.podium-place div:first-child {
+    animation: bob 4s ease infinite;
+    font-size: 2rem;
+}
+
+.podium-place div:nth-child(2) {
+    font-weight: 600;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#second-place-podium {
+    background: #9EB7E5;
+    height: 10rem;
+}
+
+#first-place-podium {
+    background: #F5DD90;
+    height: 15rem;
+}
+
+#third-place-podium {
+    background: #F26CA7;
+    height: 5rem;
 }
