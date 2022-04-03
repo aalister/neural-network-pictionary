@@ -63,10 +63,10 @@
     <div id="enter-name" class="scrim active">
         <div class="popup">
             <p id="set-name-title" class="popup-title">Enter Name:</p>
-            <div id="set-name-container">
+            <form id="set-name-container" autocomplete="off" onsubmit="return false;">
                 <input type="text" id="name-input" placeholder="Enter your name" autocomplete="off">
-                <button id="set-name-button" class="button primary-button clicky">Set Name</button>
-            </div>
+                <input id="set-name-button" class="button primary-button clicky" type="submit" value="Set Name">
+            </form>
         </div>
     </div>
     
