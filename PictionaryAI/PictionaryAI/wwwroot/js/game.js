@@ -95,6 +95,9 @@
         currentPromptName = promptName;
         currentPromptIndex = promptIndex;
 
+        document.getElementById("mascot-happy").classList.remove("active");
+        document.getElementById("mascot-confused").classList.add("active");
+
         countdownBackground.style.visibility = "hidden";
         clearButton.style.visibility = "visible";
         let number = Math.floor(duration / 1000);
@@ -257,6 +260,8 @@
         if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 20) {
             conn.invoke("drawingGuessed");
             new Audio("/sound/win.mp3").play();
+            document.getElementById("mascot-confused").classList.remove("active");
+            document.getElementById("mascot-happy").classList.add("active");
             clearInterval(guessInterval);
         } else {
             const guessIndex = prediction.indexOf(Math.max(...prediction));
