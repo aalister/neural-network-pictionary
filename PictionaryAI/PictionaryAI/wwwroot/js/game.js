@@ -5,6 +5,16 @@
     const playerList = document.getElementById("player-list");
     const playerTemplate = document.getElementById("player-template");
 
+    function sortPlayers() {
+        players = players.sort(function (a, b) {
+            if (a.score < b.score) return 1;
+            if (a.score > b.score) return -1;
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+        });
+    }
+
     /**
      * Display error message when the server closes.
      */
@@ -17,14 +27,8 @@
      */
     conn.on("playerListChange", function(updatedList) {
         // Sort players by score (or alphabetically if they have the same score)
-        players = updatedList.sort(function(a, b) {
-            if (a.score < b.score) return 1;
-            if (a.score > b.score) return -1;
-            if (a.name > b.name) return 1;
-            if (a.name < b.name) return -1;
-            return 0;
-        });
-
+        players = updatedList;
+        sortPlayers();
         playerList.innerHTML = "";
 
         for (const player of players) {
@@ -136,7 +140,15 @@
         if (player) {
             player.score = newScore;
             player.hasGuessed = true;
+            sortPlayers();
+            let playerIndex = players.findIndex(p => p.id == playerId);
             let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
+            if (playerIndex == 0) {
+                playerList.insertAdjacentElement("afterbegin", playerEle);
+            }
+            else {
+                playerList.children.item(playerIndex - 1).insertAdjacentElement("afterend", playerEle);
+            }
             playerEle.querySelector(".player-score").innerHTML = newScore;
             playerEle.setAttribute("guessed", "");
             let increaseBalloon = playerEle.querySelector(".player-increase");
