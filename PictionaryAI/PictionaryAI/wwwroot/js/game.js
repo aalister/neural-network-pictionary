@@ -93,6 +93,9 @@
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         isRunning = true;
 
+        document.getElementById("rounds").innerHTML = `${currentRound}/${totalRounds}`;
+        document.getElementById("rounds").style.display = "inline";
+
         setTimeout(function() {
             guessInterval = setInterval(predict, 1000);
         }, 2000);
