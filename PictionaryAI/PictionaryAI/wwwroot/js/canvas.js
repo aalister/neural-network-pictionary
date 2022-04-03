@@ -90,3 +90,5 @@ canvas.addEventListener("mousemove", function(event) {
 document.body.addEventListener("mouseup", function(_event) {
     isDrawing = false;
 });
+
+document.getElementById("canvas-clear-button").addEventListener("click", clear);

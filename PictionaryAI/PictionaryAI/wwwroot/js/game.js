@@ -46,6 +46,7 @@
     const timer = document.getElementById("timer");
     const countdownBackground = document.getElementById("canvas-overlay");
     const countdown = document.getElementById("canvas-overlay-text");
+    const clearButton = document.getElementById("canvas-clear-button");
 
     /**
      * Launch the countdown.
@@ -59,6 +60,7 @@
 
         let number = Math.floor(duration / 1000);
         countdownBackground.style.visibility = "visible";
+        clearButton.style.visibility = "hidden";
         countdown.innerHTML = number
         
         const interval = setInterval(function() {
@@ -67,6 +69,7 @@
 
             if (number == 0) {
                 countdownBackground.style.visibility = "hidden";
+                clearButton.style.visibility = "visible";
                 clearInterval(interval);
             }
         }, 1000);
@@ -90,6 +93,7 @@
         currentPromptIndex = promptIndex;
 
         countdownBackground.style.visibility = "hidden";
+        clearButton.style.visibility = "visible";
         let number = Math.floor(duration / 1000);
         timer.style.display = "inline";
         timer.innerHTML = number;
@@ -131,6 +135,7 @@
         clearInterval(guessInterval);
 
         countdownBackground.style.visibility = "visible";
+        clearButton.style.visibility = "hidden";
         countdown.innerHTML = "Round Over";
     });
 

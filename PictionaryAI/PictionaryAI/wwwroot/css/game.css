@@ -213,6 +213,12 @@ body {
     border-radius: 2rem;
 }
 
+#canvas-clear-button {
+    position: absolute;
+    bottom: 0rem;
+    right: 0rem;
+}
+
 #canvas-overlay {
     width: 100%;
     height: 100%;
