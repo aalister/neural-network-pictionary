@@ -212,6 +212,8 @@ body {
     flex: 1 1 0;
     margin: 0;
     text-align: left;
+    white-space: nowrap;
+    overflow-x: hidden;
 }
 .player-score {
     flex: 0 0 2rem;

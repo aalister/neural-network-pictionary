@@ -22,6 +22,10 @@ namespace PictionaryAI
         [Route("host/{name}")]
         public async Task<ActionResult<string>> Host([FromQuery(Name = "id")] string connectionId, [FromRoute(Name = "name")] string? name = null)
         {
+            if (name?.Length > 20)
+            {
+                return Unauthorized();
+            }
             Room room = _roomManager.CreateRoom();
             await _roomManager.AddUser(_pictionaryHub, room.Id, connectionId, name);
             return Ok(room.Id);
@@ -36,6 +40,10 @@ namespace PictionaryAI
             {
                 return NotFound();
             }
+            if (name?.Length > 20)
+            {
+                return Unauthorized();
+            }
             await _roomManager.AddUser(_pictionaryHub, roomId, connectionId, name);
             return Ok();
         }
@@ -47,6 +55,10 @@ namespace PictionaryAI
             if (!_roomManager.ConnectionIdExists(connectionId))
             {
                 return NotFound();
+            }
+            if (name.Length > 20)
+            {
+                return Unauthorized();
             }
             await _roomManager.ChangeUserName(_pictionaryHub, connectionId, name);
             return Ok();
