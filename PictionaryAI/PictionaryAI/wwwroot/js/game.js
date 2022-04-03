@@ -1,65 +1,4 @@
 ﻿(async function() {
-    let model = await tf.loadLayersModel('model/model.json');
-
-    function processImage(image)
-    {
-        return tf.tidy(()=>{
-            let tensor = tf.browser.fromPixels(image, numChannels=1);
-            return tensor.expandDims(0);
-        });
-    }
-
-    document.getElementById("test").addEventListener("click", function(_) {
-        predict();
-    });
-
-    /**
-     * Extract a 28 x 28 image from the canvas.
-     * 
-     * @returns {Uint8ClampedArray}
-     */
-    function predict() {
-        const result = document.createElement("canvas");
-
-        result.width = 28;
-        result.height = 28;
-
-        /**
-         * @type {CanvasRenderingContext2D}
-         */
-        const resultContext = result.getContext("2d");
-        resultContext.filter = "invert(1)";
-
-        const width = maxCoordX - minCoordX;
-        const height = maxCoordY - minCoordY;
-        const pixelSize = Math.max(width, height) / 26;
-        const sourceSize = Math.max(width, height) + 2 * pixelSize;
-        const centreX = (minCoordX + maxCoordX) / 2;
-        const centreY = (minCoordY + maxCoordY) / 2;
-
-        resultContext.drawImage(
-            canvas,
-            centreX - 0.5 * sourceSize,
-            centreY - 0.5 * sourceSize,
-            sourceSize,
-            sourceSize,
-            0, 0, 28, 28
-        );
-
-        // Only return the alpha channel
-        const image = resultContext.getImageData(0, 0, 28, 28);
-        const prediction = model.predict(processImage(image)).dataSync();
-        console.log(prediction);
-
-        const prompt = 8;
-        let pred_copy = structuredClone(prediction);
-        pred_copy.sort();
-        pred_copy.reverse();
-
-        console.log("order", pred_copy.indexOf(prediction[prompt]));
-        console.log("confidence", prediction[prompt])
-    }
-
     const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
 
     let players = [];
@@ -123,6 +62,8 @@
     });
 
     const prompt = document.getElementById("prompt");
+    let currentPromptName;
+    let currentPromptIndex;
     let interval = null;
 
     /**
@@ -131,6 +72,9 @@
     conn.on("newRound", function(promptName, promptIndex, duration) {
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         isRunning = true;
+
+        currentPromptName = promptName;
+        currentPromptIndex = promptIndex;
 
         countdownBackground.style.visibility = "hidden";
         let number = Math.floor(duration / 1000);
@@ -240,4 +184,58 @@
             await fetch(`/api/game/setname/${name}?id=${connId}`, { method: "POST" });
         }
     });
+
+    let model = await tf.loadLayersModel('model/model.json');
+
+    function processImage(image) {
+        return tf.tidy(() => {
+            let tensor = tf.browser.fromPixels(image, numChannels=1);
+            return tensor.expandDims(0);
+        });
+    }
+
+    document.getElementById("test").addEventListener("click", function(_) {
+        predict();
+    });
+
+    function predict() {
+        const result = document.createElement("canvas");
+
+        result.width = 28;
+        result.height = 28;
+
+        /**
+         * @type {CanvasRenderingContext2D}
+         */
+        const resultContext = result.getContext("2d");
+        resultContext.filter = "invert(1)";
+
+        const width = maxCoordX - minCoordX;
+        const height = maxCoordY - minCoordY;
+        const pixelSize = Math.max(width, height) / 26;
+        const sourceSize = Math.max(width, height) + 2 * pixelSize;
+        const centreX = (minCoordX + maxCoordX) / 2;
+        const centreY = (minCoordY + maxCoordY) / 2;
+
+        resultContext.drawImage(
+            canvas,
+            centreX - 0.5 * sourceSize,
+            centreY - 0.5 * sourceSize,
+            sourceSize,
+            sourceSize,
+            0, 0, 28, 28
+        );
+
+        // Only return the alpha channel
+        const image = resultContext.getImageData(0, 0, 28, 28);
+        const prediction = model.predict(processImage(image)).dataSync();
+        console.log(prediction);
+
+        let pred_copy = structuredClone(prediction);
+        pred_copy.sort();
+        pred_copy.reverse();
+
+        console.log("order", pred_copy.indexOf(prediction[currentPromptIndex]));
+        console.log("confidence", prediction[currentPromptIndex]);
+    }
 })();
