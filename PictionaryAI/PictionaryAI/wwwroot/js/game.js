@@ -49,14 +49,15 @@
         // Only return the alpha channel
         const image = resultContext.getImageData(0, 0, 28, 28);
         const prediction = model.predict(processImage(image)).dataSync();
+        console.log(prediction);
 
-        const prompt = 1;
+        const prompt = 8;
         let pred_copy = structuredClone(prediction);
         pred_copy.sort();
         pred_copy.reverse();
 
         console.log("order", pred_copy.indexOf(prediction[prompt]));
-        console.log("confidence", pred[prompt])
+        console.log("confidence", prediction[prompt])
     }
 
     const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
