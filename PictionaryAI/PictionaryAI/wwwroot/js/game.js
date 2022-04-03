@@ -216,10 +216,6 @@
         });
     }
 
-    document.getElementById("test").addEventListener("click", function(_) {
-        predict();
-    });
-
     function predict() {
         const result = document.createElement("canvas");
 
@@ -258,6 +254,7 @@
         console.log(prediction_sorted.indexOf(prediction[currentPromptIndex]));
 
         if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 20) {
+            isRunning = false;
             conn.invoke("drawingGuessed");
             new Audio("/sound/win.mp3").play();
             document.getElementById("mascot-confused").classList.remove("active");
