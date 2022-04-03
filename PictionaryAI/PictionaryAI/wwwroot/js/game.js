@@ -156,7 +156,7 @@
     async function hostGame() {
         const response = await fetch(`/api/game/host?id=${connId}`, { method: "POST" });
         code = await response.text();
-        document.getElementById("code").innerHTML = code;
+        document.getElementById("code").value = code;
         
         // Make start game button visible
         startButton.style.display = "block";

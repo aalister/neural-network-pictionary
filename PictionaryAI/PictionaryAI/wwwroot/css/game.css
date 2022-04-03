@@ -77,17 +77,27 @@ body {
 }
 
 #code-wrapper {
-    align-items: center;
-    display: flex;
-    justify-content: flex-end;
     width: 20rem;
+    height: 3rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: stretch;
 }
 
 #code {
-    margin-right: .6rem;
+    flex: 1 1 0;
+    border-radius: 1rem 0 0 1rem;
+    border: 1px solid #9eb7e5;
+    box-shadow: #d8e2f5 0.5rem 0.5rem;
+    padding-left: 1rem;
 }
 
-
+#copy-code-button {
+    padding: 0;
+    flex: 0 0 5rem;
+    border-radius: 0 1rem 1rem 0;
+}
 
 
 
