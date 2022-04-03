@@ -228,7 +228,6 @@ body {
     width: 100%;
 }
 
-
 #canvas-container {
     width: 100%;
     height: 100%;
@@ -280,9 +279,20 @@ body {
 }
 
 #mascot-container img {
+    animation: bob 2s ease infinite;
     width: 20rem;
 }
 
 #mascot-container img:not(.active) {
     display: none;
+}
+
+@keyframes bob {
+    0%, 100% {
+        transform: translate(0, 2rem);
+    }
+
+    50% {
+        transform: translate(0, 0);
+    }
 }
