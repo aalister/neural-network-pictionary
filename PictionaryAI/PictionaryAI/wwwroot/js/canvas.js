@@ -5,6 +5,12 @@ const canvas = document.getElementById("canvas");
  */
 const context = canvas.getContext("2d");
 let canvasRect = canvas.getBoundingClientRect();
+
+let minCoordX = Infinity;
+let minCoordY = Infinity;
+let maxCoordX = -Infinity;
+let maxCoordY = -Infinity;
+
 let isDrawing = false;
 let isRunning = false;
 context.lineCap = "round";
@@ -15,6 +21,12 @@ context.lineCap = "round";
 function clear() {
     context.fillStyle = "white";
     context.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Reset image bounds
+    minCoordX = Infinity;
+    minCoordY = Infinity;
+    maxCoordX = -Infinity;
+    maxCoordY = -Infinity;
 }
 
 /**
@@ -64,6 +76,12 @@ canvas.addEventListener("mousemove", function(event) {
         context.lineTo(x, y);
         context.stroke();
     }
+
+    // Update bounds of image
+    maxCoordX = Math.max(maxCoordX, x);
+    maxCoordY = Math.max(maxCoordY, y);
+    minCoordX = Math.min(minCoordX, x);
+    minCoordY = Math.min(minCoordY, y);
 });
 
 /**

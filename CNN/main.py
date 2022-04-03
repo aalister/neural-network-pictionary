@@ -19,10 +19,12 @@ def load_data():
     labels = np.empty([0, OUTPUT_SIZE])
 
     all_files = glob.glob(os.path.join("D:/Google_Draw_Dataset/" "*.npy"))
+    all_files.sort(key=lambda x: x.lower())
     print(all_files)
     for i, file in enumerate(all_files):
         data = np.load(file, mmap_mode="r")
-        data = np.array([d.reshape(INPUT_SIZE) for d in data[4000: 4500, :]])
+        # data = np.array([d.reshape(INPUT_SIZE) for d in data[5500: 6000, :]])
+        data = np.array([d.reshape(INPUT_SIZE) for d in data[1500: 3000, :]])
         # print(type(data))
         one_hot_encoding = make_one_hot_encoding(OUTPUT_SIZE, i)
         label = [one_hot_encoding for _ in range(len(data))]
@@ -31,12 +33,14 @@ def load_data():
         input_data = np.concatenate((input_data, data), axis=0)
         labels = np.concatenate((labels, label), axis=0)
 
-        print(f"{i} / {len(all_files)}")
+        print(f"{i} / {len(all_files)} ({all_files[i]})")
 
-        # print(data[0])
-        # print(label)
-        # plt.imshow(data[0].reshape((28, 28)), interpolation='nearest')
-        # plt.show()
+        # if all_files[i] == "D:/Google_Draw_Dataset\\axe.npy":
+        #     for d in data:
+        #         # print(data[0])
+        #         # print(label)
+        #         plt.imshow(d, interpolation='nearest')
+        #         plt.show()
 
     print(input_data.shape)
     print(labels.shape)
@@ -59,7 +63,8 @@ def load_data():
 
 
 def main():
-    model = models.load_model("anywhere2")
+    model = models.load_model("model2.h5")
+    model.summary()
     # model = models.Sequential()
     #
     # # Input layer
@@ -68,9 +73,9 @@ def main():
     # # Convolutional layers
     # model.add(layers.Conv2D(filters=32, kernel_size=(3, 3), activation="relu"))  # 64
     # model.add(layers.MaxPool2D(pool_size=(2, 2)))
-    # model.add(layers.Conv2D(filters=128, kernel_size=(3, 3), activation="relu"))  # 256
+    # model.add(layers.Conv2D(filters=64, kernel_size=(3, 3), activation="relu"))  # 128
     # model.add(layers.MaxPool2D(pool_size=(2, 2)))
-    # model.add(layers.Conv2D(filters=360, kernel_size=(3, 3), activation="relu"))  # 512
+    # model.add(layers.Conv2D(filters=256, kernel_size=(3, 3), activation="relu"))  # 360
     # model.add(layers.MaxPool2D(pool_size=(2, 2)))
     #
     # # Fully connected layers
@@ -90,6 +95,32 @@ def main():
     #     metrics=['accuracy', metrics.TopKCategoricalAccuracy(k=5)]
     # )
 
+    # model.save("model2.h5")
+
+    data = np.load("D:/Google_Draw_Dataset\\apple.npy", mmap_mode="r")
+    img = 20685
+    print(data[img].reshape(28, 28))
+    plt.imshow(data[img].reshape(28, 28), interpolation='nearest')
+    plt.show()
+
+    pred = model.predict(data[img].reshape(1, 28, 28, 1))[0]
+    for i, v in enumerate(pred):
+        print(f"{i}: {v}")
+    # return
+
+    for n in range(1, 344):
+        pred_copy = [p for p in pred]
+        pred_copy.sort(reverse=True)
+        if len(pred_copy) > n:
+            pred_copy = pred_copy[:n]
+        if pred[8] in pred_copy:
+            print(f"yay {n}")
+            break
+        else:
+            print(f"nay {n}")
+
+    return
+
     test_data, test_labels, train_data, train_labels = load_data()
     print(f"test_data: {test_data.shape}")
     print(f"test_labels: {test_labels.shape}")
@@ -104,7 +135,7 @@ def main():
         train_data,
         train_labels,
         batch_size=256,
-        epochs=5,
+        epochs=2,
         validation_data=(test_data, test_labels)
     )
 
@@ -120,7 +151,7 @@ def main():
     print(f"acc: {acc}")
     print(f"kacc: {kacc}")
 
-    model.save("anywhere4")
+    model.save("model_6")
 
 
 def test_model():
