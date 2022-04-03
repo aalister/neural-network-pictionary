@@ -40,7 +40,7 @@ namespace PictionaryAI
             return _connIdToRoom[connectionId];
         }
 
-        const int totalRounds = 20;
+        const int totalRounds = 10;
         const int countdownMillis = 3000;
         const int roundLengthMillis = 20000;
         const int roundBreakMillis = 5000;
