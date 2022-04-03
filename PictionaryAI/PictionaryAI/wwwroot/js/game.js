@@ -253,7 +253,7 @@
         prediction_sorted.reverse();
         console.log(prediction_sorted.indexOf(prediction[currentPromptIndex]));
 
-        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 20) {
+        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 10) {
             // Don't allow guesses after the round has finished
             if (isRunning) {
                 isRunning = false;
