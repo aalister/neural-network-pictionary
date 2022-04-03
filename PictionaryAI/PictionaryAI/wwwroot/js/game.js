@@ -254,12 +254,18 @@
         console.log(prediction_sorted.indexOf(prediction[currentPromptIndex]));
 
         if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 20) {
-            isRunning = false;
-            conn.invoke("drawingGuessed");
-            new Audio("/sound/win.mp3").play();
-            document.getElementById("mascot-confused").classList.remove("active");
-            document.getElementById("mascot-happy").classList.add("active");
-            clearInterval(guessInterval);
+            // Don't allow guesses after the round has finished
+            if (isRunning) {
+                isRunning = false;
+                conn.invoke("drawingGuessed");
+                countdownBackground.style.visibility = "visible";
+                clearButton.style.visibility = "hidden";
+                countdown.innerHTML = "Correct!";
+                new Audio("/sound/win.mp3").play();
+                document.getElementById("mascot-confused").classList.remove("active");
+                document.getElementById("mascot-happy").classList.add("active");
+                clearInterval(guessInterval);
+            }
         } else {
             const guessIndex = prediction.indexOf(Math.max(...prediction));
         }
