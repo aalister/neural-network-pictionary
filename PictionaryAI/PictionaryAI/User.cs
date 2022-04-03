@@ -24,8 +24,8 @@
         public void AddScoreForCompletingDrawing(int timeTakenMillis, int roundLengthMillis)
         {
             HasCompletedDrawing = true;
-            const uint baseValue = 25;
-            const uint scaleValue = 75;
+            const uint baseValue = 10;
+            const uint scaleValue = 90;
             Score += baseValue + (uint)((1 - ((double)timeTakenMillis / (double)roundLengthMillis)) * scaleValue);
         }
     }
