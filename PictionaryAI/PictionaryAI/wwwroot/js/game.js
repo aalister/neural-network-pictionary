@@ -83,7 +83,7 @@
     /**
      * Start a new round with a particular prompt.
      */
-    conn.on("newRound", function(promptName, promptIndex, duration) {
+    conn.on("newRound", function(currentRound, totalRounds, promptName, promptIndex, duration) {
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         isRunning = true;
 
@@ -127,7 +127,7 @@
      */
     conn.on("playerScored", function(playerId, newScore, changeInScore) {
         console.log(`Player scored: ${playerId}, ${newScore}, ${changeInScore}`);
-        player = players.find(p => p.id == playerId);
+        let player = players.find(p => p.id == playerId);
         if (player) {
             player.score = newScore;
             player.hasGuessed = true;
