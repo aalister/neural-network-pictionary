@@ -173,7 +173,7 @@
      * @param {string} code 
      */
     async function joinGame(code) {
-        document.getElementById("code").innerHTML = code;
+        document.getElementById("code").value = code;
         const response = await fetch(`/api/game/join/${code}?id=${connId}`, { method: "POST" });
         if (!response.ok) {
             document.getElementById("game-not-found").classList.add("active");
