@@ -26,19 +26,49 @@ body {
     background: white;
     padding: 5rem;
     max-width: 50rem;
+    border-radius: 4rem;
 }
 
-.popup h2 {
-    margin-top: 0;
+.popup-title {
+    margin: 0;
+    font-size: 40px;
+    color: #f26ca7;
 }
 
-#enter-name .popup {
+.popup-description {
+    margin: 2rem;
+    font-size: 16px;
+    color: black;
+}
+
+.popup-button {
+    width: 15rem;
+}
+
+#set-name-title {
+    font-size: 32px;
+}
+
+#set-name-container {
+    margin-top: 2rem;
     display: flex;
-    flex-direction: column;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: stretch;
+}
+
+#name-input {
+    flex: 1 1 0;
+    min-width: 0;
+    border-radius: 1rem 0 0 1rem;
+    border: 1px solid #f26ca7;
+    box-shadow: #d8e2f5 0.5rem 0.5rem;
+    padding-left: 1rem;
 }
 
 #set-name-button {
-    margin-top: 1rem;
+    flex: 0 0 10rem;
+    border-radius: 0 1rem 1rem 0;
 }
 
 #everything-container {
