@@ -46,6 +46,8 @@
     const countdownBackground = document.getElementById("canvas-overlay");
     const countdown = document.getElementById("canvas-overlay-text");
     const clearButton = document.getElementById("canvas-clear-button");
+    const guessContainer = document.getElementById("guess-container");
+    const speechBubble = document.getElementById("speech-bubble");
 
     /**
      * Launch the countdown.
@@ -103,6 +105,9 @@
         timer.style.display = "inline";
         timer.innerHTML = number;
         prompt.innerHTML = promptName;
+        guessContainer.style.visibility = "hidden";
+        speechBubble.innerHTML = "";
+        hasDrawn = false;
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         //Clear player guessed
@@ -148,6 +153,8 @@
         console.log("End round");
         isRunning = false;
 
+        guessContainer.style.visibility = "hidden";
+        speechBubble.innerHTML = "";
         timer.innerHTML = 0;
         clearInterval(interval);
         clearInterval(guessInterval);
@@ -234,6 +241,8 @@
     function predict() {
         // Only make prediction if the player has drawn on their canvas
         if (!hasDrawn) {
+            guessContainer.style.visibility = "hidden";
+            speechBubble.innerHTML = "";
             return;
         }
 
@@ -281,6 +290,8 @@
                 countdownBackground.style.visibility = "visible";
                 clearButton.style.visibility = "hidden";
                 countdown.innerHTML = "Correct!";
+                guessContainer.style.visibility = "visible";
+                speechBubble.innerHTML = prompts[currentPromptIndex];
                 new Audio("/sound/win.mp3").play();
                 document.getElementById("mascot-confused").classList.remove("active");
                 document.getElementById("mascot-happy").classList.add("active");
@@ -288,6 +299,8 @@
             }
         } else {
             const guessIndex = prediction.indexOf(Math.max(...prediction));
+            guessContainer.style.visibility = "visible";
+            speechBubble.innerHTML = prompts[guessIndex];
         }
     }
 })();
