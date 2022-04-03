@@ -92,13 +92,23 @@ body {
 
 #timer-wrapper {
     width: 25rem;
+    color: #9eb7e5;
+    display: flex;
+    font-size: 3.6rem;
+    align-items: center;
 }
 
 #timer {
     display: none;
-    color: #9eb7e5;
     font-family: "Roboto";
-    font-size: 36px;
+    margin-right: 7rem;
+    width: 6rem;
+    text-align: left;
+}
+
+#rounds {
+    display: none;
+    font-weight: 200;
 }
 
 #prompt {
