@@ -271,3 +271,18 @@ body {
     transform: translate(-50%, -50%);
     width: 100%;
 }
+
+#mascot-container {
+    position: absolute;
+    width: 21rem;
+    right: -23rem;
+    bottom: 0;
+}
+
+#mascot-container img {
+    width: 20rem;
+}
+
+#mascot-container img:not(.active) {
+    display: none;
+}
