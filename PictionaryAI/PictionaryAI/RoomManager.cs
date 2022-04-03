@@ -134,9 +134,9 @@ namespace PictionaryAI
         {
             Room room = GetRoomFromConnectionId(connectionId);
             User user = room.GetUserFromConnectionId(connectionId);
+            uint oldScore = user.Score;
             await room.PlayerCompletedDrawing(context, this, connectionId);
-            await SendPlayerListChange(context, room);
-            await context.Clients.Group(room.Id).SendAsync("PlayerScored", user.Id);
+            await context.Clients.Group(room.Id).SendAsync("PlayerScored", user.Id, user.Score, user.Score - oldScore);
         }
     }
 }

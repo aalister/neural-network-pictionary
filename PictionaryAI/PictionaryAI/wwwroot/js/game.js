@@ -37,7 +37,6 @@
             if (player.hasGuessed) {
                 clone.setAttribute("guessed", "");
             }
-            //playerList.innerHTML += `<li><span>${player.name}</span><span>${player.score}</span></li>`;
             playerList.appendChild(clone);
         }
     });
@@ -108,7 +107,9 @@
 
         //Clear player guessed
         for (const player of players) {
-            document.querySelector(`.player[player-id='${player.id}']`).removeAttribute("guessed");
+            let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
+            playerEle.removeAttribute("guessed");
+            playerEle.querySelector(".player-increase").style.visibility = "hidden";
         }
 
         interval = setInterval(function() {
@@ -124,8 +125,19 @@
     /**
      * Indicate that a player scored.
      */
-    conn.on("playerScored", function(playerId) {
-        console.log(`Player scored: ${playerId}`);
+    conn.on("playerScored", function(playerId, newScore, changeInScore) {
+        console.log(`Player scored: ${playerId}, ${newScore}, ${changeInScore}`);
+        player = players.find(p => p.id == playerId);
+        if (player) {
+            player.score = newScore;
+            player.hasGuessed = true;
+            let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
+            playerEle.querySelector(".player-score").innerHTML = newScore;
+            playerEle.setAttribute("guessed", "");
+            let increaseBalloon = playerEle.querySelector(".player-increase");
+            increaseBalloon.innerHTML = `+${changeInScore}`;
+            increaseBalloon.style.visibility = "visible";
+        }
     });
 
     /**

@@ -179,17 +179,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/*    #player-list li {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        background: white;
-    }
-
-        #player-list li.active {
-            background: goldenrod;
-        }*/
-
 .player {
     padding: 0 1rem;
     height: 4rem;
@@ -197,6 +186,7 @@ body {
     border-radius: 1rem;
     width: 100%;
     margin: 0.5rem 0;
+    position: relative;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
@@ -222,6 +212,21 @@ body {
     font-size: 24px;
 }
 
+.player-increase {
+    background-color: #2ad156;
+    color: white;
+    position: absolute;
+    width: 8rem;
+    height: 100%;
+    right: -9rem;
+    top: 0;
+    border-radius: 1rem;
+    padding: 0.75rem 0;
+    font-family: "Roboto";
+    font-size: 20px;
+    text-align: center;
+    z-index: 10;
+}
 
 #start-button {
     display: none;
