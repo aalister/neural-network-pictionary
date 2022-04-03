@@ -1,99 +1,4 @@
 ﻿(async function() {
-    const canvas = document.getElementById("canvas");
-
-    /**
-     * @type {CanvasRenderingContext2D}
-     */
-    const context = canvas.getContext("2d");
-    let bounds;
-
-    /**
-     * Update the canvas when it resizes.
-     */
-    function resize() {
-        bounds = canvas.getBoundingClientRect();
-
-        canvas.width = bounds.width;
-        canvas.height = bounds.height;
-
-        context.lineWidth = Math.ceil(canvas.width / 28);
-    }
-    new ResizeObserver(resize).observe(document.body);
-    resize();
-
-    context.lineCap = "round";
-    context.strokeStyle = "black";
-    context.fillStyle = "rgba(0, 0, 0, 0)";
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let isDrawing = false;
-    let inGame = false;
-
-    /**
-     * Start drawing when the user clicks.
-     */
-    canvas.addEventListener("mousedown", function(event) {
-        setMousePos(event);
-        isDrawing = true && inGame;
-
-        context.beginPath();
-        context.moveTo(mouseX, mouseY);
-    });
-    
-    /**
-     * Draw a line to the mouse's new position.
-     */
-    canvas.addEventListener("mousemove", function(event) {
-        setMousePos(event);
-
-        if (isDrawing && inGame) {
-            context.lineTo(mouseX, mouseY);
-            context.stroke();
-        }
-    });
-
-    /**
-     * Stop drawing the line when the user releases the mouse anywhere on the page.
-     */
-    document.body.addEventListener("mouseup", function(event) {
-        setMousePos(event);
-        isDrawing = false;
-    });
-
-    /**
-     * Set mouseX and mouseY to the current mouse position.
-     * 
-     * @param {MouseEvent} event 
-     */
-    function setMousePos(event) {
-        mouseX = event.clientX - bounds.left;
-        mouseY = event.clientY - bounds.top;
-    }
-
-    /**
-     * Extract a 28 x 28 image from the canvas.
-     * 
-     * @returns {Uint8ClampedArray}
-     */
-    function extractImage() {
-        const result = document.createElement("canvas");
-
-        result.width = 28;
-        result.height = 28;
-
-        /**
-         * @type {CanvasRenderingContext2D}
-         */
-        const resultContext = result.getContext("2d");
-        resultContext.drawImage(canvas, 0, 0, 28, 28);
-
-        // Only return the alpha channel
-        const image = resultContext.getImageData(0, 0, 28, 28).data;
-        return image.filter((_, index) => (index - 3) % 4 == 0);
-    }
-
     const conn = new signalR.HubConnectionBuilder().withUrl("/pictionaryHub").build();
 
     let players = [];
@@ -163,7 +68,7 @@
      */
     conn.on("newRound", function(promptName, promptIndex, duration) {
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
-        inGame = true;
+        isRunning = true;
 
         countdownBackground.style.visibility = "hidden";
         let number = Math.floor(duration / 1000);
@@ -201,7 +106,7 @@
      */
     conn.on("endRound", function() {
         console.log("End round");
-        inGame = false;
+        isRunning = false;
 
         timer.innerHTML = 0;
         clearInterval(interval);
