@@ -231,11 +231,14 @@
         const prediction = model.predict(processImage(image)).dataSync();
         console.log(prediction);
 
-        let pred_copy = structuredClone(prediction);
-        pred_copy.sort();
-        pred_copy.reverse();
+        let prediction_sorted = structuredClone(prediction);
+        prediction_sorted.sort();
+        prediction_sorted.reverse();
 
-        console.log("order", pred_copy.indexOf(prediction[currentPromptIndex]));
-        console.log("confidence", prediction[currentPromptIndex]);
+        if (prediction_sorted.indexOf(prediction[currentPromptIndex]) < 20) {
+            conn.invoke("drawingGuessed");
+        } else {
+            const guessIndex = prediction.indexOf(Math.max(...prediction));
+        }
     }
 })();
