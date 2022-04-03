@@ -37,7 +37,6 @@
             if (player.hasGuessed) {
                 clone.setAttribute("guessed", "");
             }
-            //playerList.innerHTML += `<li><span>${player.name}</span><span>${player.score}</span></li>`;
             playerList.appendChild(clone);
         }
     });
@@ -47,6 +46,8 @@
     const countdownBackground = document.getElementById("canvas-overlay");
     const countdown = document.getElementById("canvas-overlay-text");
     const clearButton = document.getElementById("canvas-clear-button");
+    const guessContainer = document.getElementById("guess-container");
+    const speechBubble = document.getElementById("speech-bubble");
 
     /**
      * Launch the countdown.
@@ -84,7 +85,7 @@
     /**
      * Start a new round with a particular prompt.
      */
-    conn.on("newRound", function(promptName, promptIndex, duration) {
+    conn.on("newRound", function(currentRound, totalRounds, promptName, promptIndex, duration) {
         console.log(`New round: ${promptName}, ${promptIndex}, ${duration}`);
         isRunning = true;
 
@@ -104,11 +105,16 @@
         timer.style.display = "inline";
         timer.innerHTML = number;
         prompt.innerHTML = promptName;
+        guessContainer.style.visibility = "hidden";
+        speechBubble.innerHTML = "";
+        hasDrawn = false;
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         //Clear player guessed
         for (const player of players) {
-            document.querySelector(`.player[player-id='${player.id}']`).removeAttribute("guessed");
+            let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
+            playerEle.removeAttribute("guessed");
+            playerEle.querySelector(".player-increase").style.visibility = "hidden";
         }
 
         interval = setInterval(function() {
@@ -124,8 +130,19 @@
     /**
      * Indicate that a player scored.
      */
-    conn.on("playerScored", function(playerId) {
-        console.log(`Player scored: ${playerId}`);
+    conn.on("playerScored", function(playerId, newScore, changeInScore) {
+        console.log(`Player scored: ${playerId}, ${newScore}, ${changeInScore}`);
+        let player = players.find(p => p.id == playerId);
+        if (player) {
+            player.score = newScore;
+            player.hasGuessed = true;
+            let playerEle = document.querySelector(`.player[player-id='${player.id}']`);
+            playerEle.querySelector(".player-score").innerHTML = newScore;
+            playerEle.setAttribute("guessed", "");
+            let increaseBalloon = playerEle.querySelector(".player-increase");
+            increaseBalloon.innerHTML = `+${changeInScore}`;
+            increaseBalloon.style.visibility = "visible";
+        }
     });
 
     /**
@@ -136,6 +153,8 @@
         console.log("End round");
         isRunning = false;
 
+        guessContainer.style.visibility = "hidden";
+        speechBubble.innerHTML = "";
         timer.innerHTML = 0;
         clearInterval(interval);
         clearInterval(guessInterval);
@@ -209,6 +228,8 @@
     });
 
     let model = await tf.loadLayersModel('model/model.json');
+    // Process useless data to prevent freeze when the first guess is made
+    model.predict(tf.randomNormal([1, 28, 28, 1])).dataSync();
 
     function processImage(image) {
         return tf.tidy(() => {
@@ -220,6 +241,8 @@
     function predict() {
         // Only make prediction if the player has drawn on their canvas
         if (!hasDrawn) {
+            guessContainer.style.visibility = "hidden";
+            speechBubble.innerHTML = "";
             return;
         }
 
@@ -267,6 +290,8 @@
                 countdownBackground.style.visibility = "visible";
                 clearButton.style.visibility = "hidden";
                 countdown.innerHTML = "Correct!";
+                guessContainer.style.visibility = "visible";
+                speechBubble.innerHTML = prompts[currentPromptIndex];
                 new Audio("/sound/win.mp3").play();
                 document.getElementById("mascot-confused").classList.remove("active");
                 document.getElementById("mascot-happy").classList.add("active");
@@ -274,6 +299,8 @@
             }
         } else {
             const guessIndex = prediction.indexOf(Math.max(...prediction));
+            guessContainer.style.visibility = "visible";
+            speechBubble.innerHTML = prompts[guessIndex];
         }
     }
 })();

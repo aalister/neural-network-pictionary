@@ -8,19 +8,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pictonet | Game</title>
 
     <link href="~/css/styles.css" rel="stylesheet">
     <link href="~/css/game.css" rel="stylesheet">
 
     <script src="~/lib/signalr/signalr.js"></script>
     <script src="~/lib/tensorflow/tensorflow.js"></script>
+    <script defer src="~/js/prompts.js"></script>
     <script defer src="~/js/canvas.js"></script>
     <script defer src="~/js/game.js"></script>
     <script defer src="~/js/mainContainerResize.js"></script>
 </head>
 <body>
-    <div id="player-template" class="player" player-id=-1 style="display:none"><div class="player-name"></div><div class="player-score"></div></div>
+    <div id="player-template" class="player" player-id=-1 style="display:none"><div class="player-name"></div><div class="player-score"></div><div class="player-increase" style="visibility:hidden"></div></div>
     <div id="everything-container">
         <div id="banner">
             <div id="timer-wrapper">
@@ -52,8 +53,10 @@
                     <p id="canvas-overlay-text"></p>
                 </div>
             </div>
-            <div id="mascot-container">
+            <div id="guess-container" style="visibility:hidden">
                 <div id="speech-bubble"></div>
+            </div>
+            <div id="mascot-container">
                 <img id="mascot-confused" src="~/img/pictasso_confused.png">
                 <img id="mascot-happy" class="active" src="~/img/pictasso_happy.png">
             </div>
@@ -84,6 +87,20 @@
         <div class="popup">
             <p class="popup-title">Connection lost</p>
             <p class="popup-description">Try checking your internet connection. Otherwise, our server may be offline.</p>
+            <form action="~/">
+                <input class="popup-button button primary-button clicky" type="submit" value="Go Back">
+            </form>
+        </div>
+    </div>
+    
+    <div id="results" class="scrim">
+        <div class="popup">
+            <p class="popup-title">Results</p>
+            <div id="podium">
+                <div class="podium-place"><div id="second-place"></div><div id="second-place-podium">2</div></div>
+                <div class="podium-place"><div id="first-place"></div><div id="first-place-podium">1</div></div>
+                <div class="podium-place"><div id="third-place"></div><div id="third-place-podium">3</div></div>
+            </div>            
             <form action="~/">
                 <input class="popup-button button primary-button clicky" type="submit" value="Go Back">
             </form>

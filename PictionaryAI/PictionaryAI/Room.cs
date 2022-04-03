@@ -9,17 +9,19 @@ namespace PictionaryAI
         private readonly Dictionary<string, User> _connIdToUser;
         private Timer? _countdownTimer;
         private DateTime _timeAtRoundStart;
-        private int _countdownMillis;
-        private int _roundLengthMillis;
-        private int _roundBreakMillis;
+        private readonly int _countdownMillis;
+        private readonly int _roundLengthMillis;
+        private readonly int _roundBreakMillis;
         private string[] _availablePrompts;
         private List<uint> previousPrompts = new List<uint>();
 
-        public Room(int countdownMillis, int roundLengthMillis, int roundBreakMillis)
+        public Room(int totalRounds, int countdownMillis, int roundLengthMillis, int roundBreakMillis)
         {
             _connIdToUser = new Dictionary<string, User>();
             string newId = Guid.NewGuid().ToString();
             Id = newId.Substring(0, newId.IndexOf('-'));
+            TotalRounds = totalRounds;
+            CurrentRound = 0;
             _countdownMillis = countdownMillis;
             _roundLengthMillis = roundLengthMillis;
             _roundBreakMillis = roundBreakMillis;
@@ -29,6 +31,8 @@ namespace PictionaryAI
         public string Id { get; }
         public bool IsStarted { get; private set; }
         public bool IsRoundInProgress { get; private set; }
+        public int TotalRounds { get; }
+        public int CurrentRound { get; private set; }
 
         public bool ConnectionIdExists(string connectionId)
         {
@@ -114,6 +118,7 @@ namespace PictionaryAI
         public (string, uint) StartNewRound(IHubContext<PictionaryHub> context, RoomManager roomManager)
         {
             (string prompt, uint promptIndex) = GenerateNewPrompt();
+            CurrentRound += 1;
             foreach (User user in _connIdToUser.Values)
             {
                 user.HasCompletedDrawing = false;
@@ -156,19 +161,27 @@ namespace PictionaryAI
             IsRoundInProgress = false;
             //The countdown timer might still be running if we're ending prematurely, so we need to stop it if it is
             StopTimer();
-            //Now create a new countdown timer to start the next round
-            _countdownTimer = new Timer(_roundBreakMillis)
+            //If we have to end the game, don't start the timer
+            if (CurrentRound < TotalRounds)
             {
-                AutoReset = false,
-                Enabled = true
-            };
-            _countdownTimer.Start();
-            _countdownTimer.Elapsed += async (s, e) =>
+                //Now create a new countdown timer to start the next round
+                _countdownTimer = new Timer(_roundBreakMillis)
+                {
+                    AutoReset = false,
+                    Enabled = true
+                };
+                _countdownTimer.Start();
+                _countdownTimer.Elapsed += async (s, e) =>
+                {
+                    StopTimer();
+                    //Start a new round
+                    await roomManager.StartNewRound(context, Id);
+                };
+            }
+            else
             {
-                StopTimer();
-                //Start a new round
-                await roomManager.StartNewRound(context, Id);
-            };
+                IsStarted = false;
+            }
         }
 
         public async Task PlayerCompletedDrawing(IHubContext<PictionaryHub> context, RoomManager roomManager, string connectionId)
