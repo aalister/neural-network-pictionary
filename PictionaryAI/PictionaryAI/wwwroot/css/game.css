@@ -175,6 +175,9 @@ body {
     .player[guessed] {
         background-color: #e6ffe8;
     }
+        .player[guessed] > .player-score {
+            color: #2ad156
+        }
 .player-name {
     flex: 1 1 0;
     margin: 0;

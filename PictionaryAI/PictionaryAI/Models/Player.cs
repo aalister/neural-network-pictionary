@@ -8,6 +8,7 @@
             IsHost = isHost;
             Name = name;
             Score = score;
+            HasGuessed = hasGuessed;
         }
 
         public uint Id { get; set; }
