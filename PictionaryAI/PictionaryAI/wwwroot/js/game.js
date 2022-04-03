@@ -101,6 +101,7 @@
      * Launch the countdown.
      */
     conn.on("doCountdown", function(duration) {
+        new Audio("/sound/countdown.wav").play();
         console.log(`Do countdown ${duration}`);
 
         startButton.style.display = "none";
@@ -133,6 +134,7 @@
 
         countdownBackground.style.visibility = "hidden";
         let number = Math.floor(duration / 1000);
+        timer.style.display = "inline";
         timer.innerHTML = number;
         prompt.innerHTML = promptName;
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -166,6 +168,7 @@
      * End the round.
      */
     conn.on("endRound", function() {
+        new Audio("/sound/finish.wav").play();
         console.log("End round");
         isRunning = false;
 
