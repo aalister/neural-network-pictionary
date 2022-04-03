@@ -8,13 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pictonet | Game</title>
 
     <link href="~/css/styles.css" rel="stylesheet">
     <link href="~/css/game.css" rel="stylesheet">
 
     <script src="~/lib/signalr/signalr.js"></script>
     <script src="~/lib/tensorflow/tensorflow.js"></script>
+    <script defer src="~/js/prompts.js"></script>
     <script defer src="~/js/canvas.js"></script>
     <script defer src="~/js/game.js"></script>
     <script defer src="~/js/mainContainerResize.js"></script>
@@ -52,8 +53,10 @@
                     <p id="canvas-overlay-text"></p>
                 </div>
             </div>
-            <div id="mascot-container">
+            <div id="guess-container" style="visibility:hidden">
                 <div id="speech-bubble"></div>
+            </div>
+            <div id="mascot-container">
                 <img id="mascot-confused" src="~/img/pictasso_confused.png">
                 <img id="mascot-happy" class="active" src="~/img/pictasso_happy.png">
             </div>

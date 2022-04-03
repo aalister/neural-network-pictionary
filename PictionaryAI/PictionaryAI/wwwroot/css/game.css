@@ -292,6 +292,28 @@ body {
     display: none;
 }
 
+#guess-container {
+    position: absolute;
+    width: 21rem;
+    height: 10rem;
+    right: -23rem;
+    top: 0;
+    background-color: white;
+    border-radius: 4rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#speech-bubble {
+    margin: 0;
+    font-size: 3rem;
+    color: #f26ca7;
+}
+
 @keyframes bob {
     0%, 100% {
         transform: translate(0, 2rem);
