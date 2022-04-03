@@ -75,13 +75,13 @@ canvas.addEventListener("mousemove", function(event) {
     if (isDrawing && isRunning) {
         context.lineTo(x, y);
         context.stroke();
-    }
 
-    // Update bounds of image
-    maxCoordX = Math.max(maxCoordX, x);
-    maxCoordY = Math.max(maxCoordY, y);
-    minCoordX = Math.min(minCoordX, x);
-    minCoordY = Math.min(minCoordY, y);
+        // Update bounds of image
+        maxCoordX = Math.max(maxCoordX, x);
+        maxCoordY = Math.max(maxCoordY, y);
+        minCoordX = Math.min(minCoordX, x);
+        minCoordY = Math.min(minCoordY, y);
+    }
 });
 
 /**
